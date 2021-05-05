@@ -1,12 +1,12 @@
-# FastSpigot
+# FastSpigot介绍 / Introduction
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cd503329e69a48439a0aa1d8cb115b0b)](https://www.codacy.com/gh/HyrKG/FastSpigot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HyrKG/FastSpigot&amp;utm_campaign=Badge_Grade)
 [![codebeat badge](https://codebeat.co/badges/e83a46a7-aa0a-4dbd-ac26-a68ca734dfd4)](https://codebeat.co/projects/github-com-hyrkg-fastspigot-master)
 ![](https://img.shields.io/badge/language-Java-orange.svg)
 ![](https://img.shields.io/badge/minecraft-1.12.2-blue.svg)
 
-这是一个帮助进行快速插件开发的库/框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。该项目主要具有一下特性：
+这是一个帮助进行快速插件开发的控制反转(IoC)框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。该项目主要具有一下特性：
 
-This is a lib/framework which can helps you develop spigot plugin faster.
+This is a IoC framework which can helps you develop spigot plugin faster.
 I'll use ASM,annotation and reflection(I don't know how it calls) to help you develop faster and more succinctly.The project mainly has the following features:
 
 - 强调模块化开发，便于框架构建。Emphasize modular development, facilitate framework construction.
@@ -19,7 +19,32 @@ I'll use ASM,annotation and reflection(I don't know how it calls) to help you de
 > This project is mainly for learning purposes, it means I may make professional mistakes or description mistakes,
 > please point it out.
 
-# 一些使用前后对比 Some Before and After
+# 主要特性 / Main Feature
+####控制反转(IoC)特性 / IoC feature
+该项目是针对spigot实现的一个轻型的控制反转(IoC)框架，主要通过@Inject注释来进行对模块/处理器的依赖注入，从而进行解耦并且易于框架搭建。
+其中FastInnerCore为该框架的IoC容器。
+
+####依赖注入与动态注入 / Dependency Injection, Dynamic Injection
+该项目利用反射实现了对@Inject所注释类的依赖注入。
+同时利用ASM进行动态注入，使该框架中接口同样实现了服务提供。
+
+####接口不只是接口，同样可以提供服务 / Interface can also provide service
+在该框架中，接口已经脱离了接口的作用，而同样作为服务提供者，如以下为有效代码。
+```Java
+public class ExampleFastPlugin extends FastPlugin { 
+    @Inject
+    public YourHandler yourFastCommandExecutor;
+}
+
+class YourHandler implements ILoggerService {
+    @OnHandlerInit
+    public void onInit() {
+        debug("INIT METHOD CALLED!");
+    }
+}
+```
+
+# 一些使用前后对比 / Before and After
 #### 注册事件 Register Event
 
 使用前 Before
