@@ -20,16 +20,24 @@ I'll use ASM,annotation and reflection(I don't know how it calls) to help you de
 > please point it out.
 
 # 主要特性 / Main Feature
-####控制反转(IoC)特性 / IoC feature
+#### 控制反转(IoC)特性 / IoC feature
 该项目是针对spigot实现的一个轻型的控制反转(IoC)框架，主要通过@Inject注释来进行对模块/处理器的依赖注入，从而进行解耦并且易于框架搭建。
 其中FastInnerCore为该框架的IoC容器。
 
-####依赖注入与动态注入 / Dependency Injection, Dynamic Injection
+This project is a lightweight spigot IoC framework which mainly use @Inject to dependency inject and make your project decoupled and easy to frame.
+
+#### 依赖注入与动态注入 / Dependency Injection, Dynamic Injection
 该项目利用反射实现了对@Inject所注释类的依赖注入。
 同时利用ASM进行动态注入，使该框架中接口同样实现了服务提供。
 
-####接口不只是接口，同样可以提供服务 / Interface can also provide service
+This project uses reflection to implement dependency injection into the classes annotated by @Inject.
+At the same time, ASM is used for dynamic injection, so that the interface in the framework also realizes service provision.
+
+#### 接口不只是接口，同样可以提供服务 / Interface can also provide service
 在该框架中，接口已经脱离了接口的作用，而同样作为服务提供者，如以下为有效代码。
+
+In this framework, the interface not only a interface, but also as a service provider, such as the following is valid code.
+
 ```Java
 public class ExampleFastPlugin extends FastPlugin { 
     @Inject
@@ -44,11 +52,48 @@ class YourHandler implements ILoggerService {
 }
 ```
 
-# 一些使用前后对比 / Before and After
-#### 注册事件 Register Event
-
-使用前 Before
+# 前后对比 / Before and After
+#### 管理器 Handler
 ```Java
+//使用前 Before
+public class ExampleOriginPlugin extends JavaPlugin {
+
+    public YourHandler yourHandler;
+
+    @Override
+    public void onEnable() {
+        yourHandler = new YourHandler();
+        yourHandler.onInit();
+    }
+}
+
+class YourHandler {
+
+    public void onInit()
+    {
+
+    }
+}
+
+//##################################################################
+
+//使用后 After
+public class ExampleFastPlugin extends FastPlugin {
+
+    @Inject
+    public YourHandler yourHandler;
+}
+
+class YourHandler{
+
+    @OnHandlerInit
+    public void onInit() {
+    }
+}
+```
+#### 注册事件 Register Event
+```Java
+//使用前 Before
 public class ExampleOriginPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
@@ -62,9 +107,10 @@ class YourEventHandler implements Listener {
         //TODO
     }
 }
-```
-使用后 After
-```Java
+
+//##################################################################
+
+//使用后 After
 public class ExampleFastPlugin extends FastPlugin {
     @Inject
     public YourEventHandler yourEventHandler;
@@ -79,8 +125,8 @@ class YourEventHandler implements Listener {
 ```
 
 ####  指令 Command
-使用前 Before
 ```Java
+//使用前 Before
 public class ExampleOriginPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
@@ -103,9 +149,10 @@ class YourCommandExecutor implements CommandExecutor {
         return false;
     }
 }
-```
-使用后 After
-```Java
+
+//##################################################################
+
+//使用后 After
 public class ExampleFastPlugin extends FastPlugin {
 
     @Inject

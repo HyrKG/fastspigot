@@ -11,13 +11,12 @@ import org.bukkit.plugin.java.annotation.plugin.Plugin;
 public class ExampleFastPlugin extends FastPlugin {
 
     @Inject
-    public YourHandler yourFastCommandExecutor;
+    public YourHandler yourHandler;
 }
 
-class YourHandler implements ILoggerService {
+class YourHandler{
 
     @OnHandlerInit
     public void onInit() {
-        debug("INIT METHOD CALLED!");
     }
 }
