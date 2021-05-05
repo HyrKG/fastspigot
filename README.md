@@ -4,10 +4,16 @@
 ![](https://img.shields.io/badge/language-Java-orange.svg)
 ![](https://img.shields.io/badge/minecraft-1.12.2-blue.svg)
 
-这是一个帮助进行快速插件开发的库/框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。
+这是一个帮助进行快速插件开发的库/框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。该项目主要具有一下特性：
 
 This is a lib/framework which can helps you develop spigot plugin faster.
-I'll use ASM,annotation or reflection(I don't know how it calls) to help you develop faster and more succinctly.
+I'll use ASM,annotation and reflection(I don't know how it calls) to help you develop faster and more succinctly.The project mainly has the following features:
+
+- 强调模块化开发，便于框架构建。Emphasize modular development, facilitate framework construction.
+- 方便解耦，简化开发。Easy to decouple, easy to develop.
+- 使用接口实现服务，易于调用。Interfaces provide service too.
+- 减少不必要的冗余代码。Reduce unnecessary redundant code.
+
 >该项目主要为学习用途，很多专业知识并不具备，若有错误请指出！
 >
 > This project is mainly for learning purposes, it means I may make professional mistakes or description mistakes,
