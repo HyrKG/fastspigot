@@ -21,7 +21,6 @@ public abstract class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig,
 
     public final String poolName;
 
-
     @AutoLoad
     protected String url = "localhost:3306/yourDatabase";
     @AutoLoad
