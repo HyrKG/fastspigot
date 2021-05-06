@@ -1,7 +1,5 @@
 package cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.annotations;
 
-import cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.IndexType;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

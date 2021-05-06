@@ -1,6 +1,6 @@
 package cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.po;
 
-public class FastPO<T> {
+public class FastPO<T extends FastPO> {
     public void createTable() {
     }
 

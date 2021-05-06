@@ -1,6 +1,6 @@
 package cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.po;
 
-import cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.IndexType;
+import cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.annotations.IndexType;
 import cn.hyrkg.fastspigot.spigot.service.simplemysql.orm.annotations.TableField;
 import lombok.Data;
 
