@@ -16,6 +16,13 @@ I'll use ASM,annotation and reflection(I don't know how it calls) to help you de
 - 使用接口实现服务，易于调用。Interfaces provide service too.
 - 减少不必要的冗余代码。Reduce unnecessary redundant code.
 
+
+> ###了解更多 / Learn More
+> __中文文档:__ https://fastspigot.doc.hyrkg.cn/
+>
+> __English Document:__ Coming soon...
+
+
 >该项目主要为学习用途，很多专业知识并不具备，若有错误请指出！
 >
 > This project is mainly for learning purposes, it means I may make professional mistakes or description mistakes,
