@@ -2,6 +2,7 @@ package cn.hyrkg.fastspigot.spigot.service.config;
 
 import cn.hyrkg.fastspigot.innercore.framework.HandlerInfo;
 import cn.hyrkg.fastspigot.innercore.framework.interfaces.IImplementation;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.Field;
@@ -26,7 +27,6 @@ public class FastConfigImp implements IImplementation<IFastYamlConfig> {
             handlerInfo.innerCore.getCreator().error(handlerInfo.originClass.getSimpleName() + " parser fields was skipped because null section!");
             return;
         }
-
         ArrayList<Class> clazzIncludeSuper = new ArrayList<>();
         clazzIncludeSuper.add(handlerInfo.originClass);
         Class superClazz = handlerInfo.originClass;
@@ -35,7 +35,11 @@ public class FastConfigImp implements IImplementation<IFastYamlConfig> {
             clazzIncludeSuper.add(superClazz);
         }
 
-        for (Class clazz : clazzIncludeSuper)
+        for (Class clazz : clazzIncludeSuper) {
+            if (clazz.equals(Object.class))
+                continue;
+            object.debug(">> clazz loading " + clazz.getSimpleName());
+            boolean isDebugging = object.isDebugging();
             for (Field field : clazz.getDeclaredFields()) {
                 try {
                     if (field.isAnnotationPresent(AutoLoad.class)) {
@@ -53,6 +57,12 @@ public class FastConfigImp implements IImplementation<IFastYamlConfig> {
                             else
                                 field.set(object, readInfo(combinePath, section, field));
                         }
+                        if (isDebugging) {
+                            if (Modifier.isStatic(field.getModifiers()))
+                                object.debug(ChatColor.RESET + "@" + field.getName() + ": " + field.get(null));
+                            else
+                                object.debug(ChatColor.RESET + "@" + field.getName() + ": " + field.get(object));
+                        }
                     }
                 } catch (ErrorAutoloadException autoloadException) {
                     object.error("读取配置错误: " + autoloadException.errorMessage);
@@ -61,6 +71,7 @@ public class FastConfigImp implements IImplementation<IFastYamlConfig> {
                     object.error("发生了错误: " + exception.getMessage());
                 }
             }
+        }
     }
 
     private Object readInfo(String path, ConfigurationSection configurationSection, Field field) {

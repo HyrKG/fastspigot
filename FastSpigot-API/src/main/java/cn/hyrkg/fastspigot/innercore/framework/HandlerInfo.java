@@ -53,7 +53,7 @@ public class HandlerInfo {
             else
                 combine += args[i].substring(0, 1) + ".";
         }
-        return combine;
+        return combine + (injectInfo.name().isEmpty() ? "" : "(" + injectInfo.name() + ")");
     }
 
 }
