@@ -1,8 +1,8 @@
 package cn.hyrkg.fastspigot.spigot.service.simplemysql;
 
 import cn.hyrkg.fastspigot.innercore.framework.interfaces.IServiceProvider;
-import me.kg.fast.inject.mysql3.SimpleMysqlPool;
-import me.kg.fast.inject.mysql3.UnsafeQuery;
+import me.kg.fast.inject.mysql3_1.SimpleMysqlPool;
+import me.kg.fast.inject.mysql3_1.UnsafeQuery;
 
 public interface ISimpleMysql extends IServiceProvider {
 

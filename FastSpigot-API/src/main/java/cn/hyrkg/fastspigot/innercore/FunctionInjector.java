@@ -7,9 +7,7 @@ import cn.hyrkg.fastspigot.innercore.framework.interfaces.IServiceProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -20,7 +18,8 @@ public class FunctionInjector {
     public final FastInnerCore innerCore;
 
     private HashMap<Object, HashMap<Class, Object>> impMap = new HashMap<>();
-    private final HashMap<String, BiConsumer<Object, HandlerInfo>> inspireMap = new HashMap<>();
+
+    private final HashMap<String, BiConsumer<Object, HandlerInfo>> inspireMap = new HashMap<>(); //进行其他的启发操作，如判断为listener则注册。
 
     public void addInspire(String inspireName, BiConsumer<Object, HandlerInfo> biConsumer) {
         this.inspireMap.put(inspireName, biConsumer);
@@ -31,7 +30,7 @@ public class FunctionInjector {
         //TODO 查看接口实现，并对接实现
         Class clazz = handlerInfo.originClass;
 
-        ArrayList<Class> interfaces = new ArrayList<>();
+        Set<Class> interfaces = new HashSet<>();
 
         interfaces.addAll(Arrays.asList(clazz.getInterfaces()));
         //find extends interfaces

@@ -1,23 +1,25 @@
 package cn.hyrkg.fastspigot.spigot.service.simplemysql.instances;
 
 import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerInit;
-import cn.hyrkg.fastspigot.spigot.service.IPluginProvider;
+import cn.hyrkg.fastspigot.spigot.service.ILoggerService;
 import cn.hyrkg.fastspigot.spigot.service.config.AutoLoad;
 import cn.hyrkg.fastspigot.spigot.service.config.FastConfigImp;
 import cn.hyrkg.fastspigot.spigot.service.config.IFastYamlConfig;
 import cn.hyrkg.fastspigot.spigot.service.simplemysql.ISimpleMysql;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import me.kg.fast.inject.mysql3.SimpleMysqlPool;
+import me.kg.fast.inject.mysql3_1.SimpleMysqlPool;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 @RequiredArgsConstructor
-public abstract class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, IPluginProvider {
+public class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, ILoggerService {
 
     public final String poolName;
 
@@ -37,10 +39,12 @@ public abstract class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig,
     @OnHandlerInit
     @SneakyThrows
     public void onInit() {
-        if (!getPlugin().getDataFolder().exists())
-            getPlugin().getDataFolder().mkdirs();
+        JavaPlugin plugin = this.getPlugin();
 
-        File file = new File(getPlugin().getDataFolder(), "mysql.yml");
+        if (!plugin.getDataFolder().exists())
+            plugin.getDataFolder().mkdirs();
+
+        File file = new File(plugin.getDataFolder(), "mysql.yml");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -59,7 +63,12 @@ public abstract class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig,
 
         if (pool != null)
             pool.closePool();
-        pool = SimpleMysqlPool.init(10, configurationSection.getString("url"), configurationSection.getString("user"), configurationSection.getString("pwd"));
+
+        try {
+            pool = SimpleMysqlPool.init(10, configurationSection.getString("url"), configurationSection.getString("user"), configurationSection.getString("pwd"));
+        } catch (MySQLSyntaxErrorException e) {
+            error("Mysql error in " + getHandlerInfo().originClass.getSimpleName() + ": " + e.getMessage());
+        }
     }
 
     public String getMysqlPoolName() {
@@ -80,5 +89,9 @@ public abstract class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig,
     @Override
     public SimpleMysqlPool getPool() {
         return pool;
+    }
+
+    public JavaPlugin getPlugin() {
+        return (JavaPlugin) this.getInnerCore().getCreator();
     }
 }

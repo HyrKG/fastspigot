@@ -34,8 +34,15 @@ public class FastCommandImp implements IImplementation<IFastCommandExecutor>, Co
         if (handlerInfo.innerCore.getCreator() instanceof FastPlugin) {
             FastPlugin plugin = (FastPlugin) handlerInfo.innerCore.getCreator();
 
-            for (String cmd : executor.getCommands())
-                plugin.getCommand(cmd).setExecutor(this);
+            try {
+                for (String cmd : executor.getCommands())
+                    plugin.getCommand(cmd).setExecutor(this);
+            } catch (NullPointerException exception) {
+                plugin.error(handlerInfo.originClass.getSimpleName() + ":" + "You may not have registered the command " + Arrays.asList(executor.getCommands()) + "!");
+                return;
+            } catch (Exception e) {
+                throw e;
+            }
 
             //todo parser commands
             parserCommands(executor, handlerInfo);

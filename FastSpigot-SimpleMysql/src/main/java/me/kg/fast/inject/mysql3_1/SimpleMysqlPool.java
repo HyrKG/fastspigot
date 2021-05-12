@@ -1,7 +1,8 @@
-package me.kg.fast.inject.mysql3;
+package me.kg.fast.inject.mysql3_1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -28,7 +29,7 @@ public class SimpleMysqlPool {
         return pool;
     }
 
-    public static SimpleMysqlPool init(int size, String url, String user, String password) {
+    public static SimpleMysqlPool init(int size, String url, String user, String password) throws SQLException {
         SimpleMysqlPool pool = new SimpleMysqlPool(size);
         pool.connect(url, user, password);
         return pool;
@@ -50,10 +51,9 @@ public class SimpleMysqlPool {
 
     }
 
-    public SimpleMysqlPool connect(String url, String user, String password) {
+    public SimpleMysqlPool connect(String url, String user, String password) throws SQLException {
         closePool();
         String tempUrl = url;
-        try {
             if (!tempUrl.contains("jdbc:mysql://")) {
                 tempUrl = "jdbc:mysql://" + tempUrl;
             }
@@ -62,9 +62,6 @@ public class SimpleMysqlPool {
                 createdConnection.add(ReleasableConnection.link(this, connection));
             }
             connectionPool.addAll(createdConnection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return this;
     }
 

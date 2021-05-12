@@ -1,4 +1,4 @@
-package me.kg.fast.inject.mysql3;
+package me.kg.fast.inject.mysql3_1;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

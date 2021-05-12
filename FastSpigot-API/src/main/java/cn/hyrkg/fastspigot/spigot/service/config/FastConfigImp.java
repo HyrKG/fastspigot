@@ -22,6 +22,10 @@ public class FastConfigImp implements IImplementation<IFastYamlConfig> {
 
     private void parserFields(IFastYamlConfig object, HandlerInfo handlerInfo) {
         ConfigurationSection section = object.getConfigSection();
+        if (section == null) {
+            handlerInfo.innerCore.getCreator().error(handlerInfo.originClass.getSimpleName() + " parser fields was skipped because null section!");
+            return;
+        }
 
         ArrayList<Class> clazzIncludeSuper = new ArrayList<>();
         clazzIncludeSuper.add(handlerInfo.originClass);
