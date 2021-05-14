@@ -77,12 +77,6 @@ public class AsmInjector {
             mv.visitEnd();
         }
         cw.visitEnd();
-
-        FileOutputStream inputStream = new FileOutputStream(new File("E:\\asm\\myitems\\out.class"));
-        inputStream.write(cw.toByteArray());
-        inputStream.close();
-
-
         Class<T> injectedClazz = null;
 //        try {
 //            injectedClazz = (Class<T>) Class.forName(tagPath);

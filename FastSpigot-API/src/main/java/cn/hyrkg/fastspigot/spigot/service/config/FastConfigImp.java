@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FastConfigImp implements IImplementation<IFastYamlConfig> {
@@ -86,6 +87,13 @@ public class FastConfigImp implements IImplementation<IFastYamlConfig> {
             ArrayList<String> list = new ArrayList<>();
             list.addAll(configurationSection.getStringList(path));
             return list;
+        } else if (type.equals(HashMap.class)) {
+            HashMap<String, String> map = new HashMap<>();
+            for (String key : configurationSection.getConfigurationSection(path).getKeys(false)) {
+                String value = configurationSection.getString(path + "." + key);
+                map.put(key, value);
+            }
+            return map;
         }
         throw new ErrorAutoloadException("Wrong autoload type " + field.getType());
     }
