@@ -6,6 +6,8 @@
 ![](https://img.shields.io/badge/language-Java-orange.svg)
 ![](https://img.shields.io/badge/license-GNU-purple.svg)
 
+![](https://bstats.org/signatures/bukkit/fastspigot.svg)
+
 这是一个帮助进行快速插件开发的控制反转(IoC)框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。该项目主要具有一下特性：
 
 This is a IoC framework which can helps you develop spigot plugin faster.
