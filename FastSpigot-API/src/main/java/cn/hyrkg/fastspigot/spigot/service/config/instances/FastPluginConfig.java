@@ -23,8 +23,8 @@ public abstract class FastPluginConfig implements IFastYamlConfig, IPluginProvid
             try {
                 getPlugin().saveDefaultConfig();
             } catch (IllegalArgumentException e) {
-                error("It seems there are not config.yml in resources.");
-                error("plugin will create it as empty file!");
+                error("It seems there are not config.yml in plugin resources.");
+                error("plugin will create it as a empty file!");
 
                 //create parent directory makes sure can create file
                 ConsumerBuilder.of(pathConfig.toFile().getParentFile()).accept(j -> {

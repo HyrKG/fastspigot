@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+/**
+ * Telling core that your service need a implementation instance.<p>
+ *
+ * Simply annotate it into your custom service interface, and point to your implementation class!
+ * */
 public @interface ImpService {
 
     Class<? extends IImplementation> impClass();

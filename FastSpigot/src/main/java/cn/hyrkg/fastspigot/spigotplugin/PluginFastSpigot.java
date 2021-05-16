@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.plugin.LoadOrder;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
 
-@Plugin(name = "fastspigot", version = "0.1.0")
+@Plugin(name = "fastspigot", version = "0.1.5")
 @LoadOrder(PluginLoadOrder.STARTUP)
 public class PluginFastSpigot extends JavaPlugin {
     @Override

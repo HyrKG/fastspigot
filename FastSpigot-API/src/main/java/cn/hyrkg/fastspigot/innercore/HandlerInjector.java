@@ -47,8 +47,7 @@ public class HandlerInjector {
      **/
     public void handleInstance(Object instance, Class rawClass, HandlerInfo parentInfo) {
 
-
-        List<Field> fieldList = ReflectHelper.findFieldIsAnnotated(rawClass, Inject.class);
+        //inject instances
         List<Field> fieldInstanceList = ReflectHelper.findFieldIsAnnotated(rawClass, Instance.class);
         for (Field field : fieldInstanceList) {
             try {
@@ -66,6 +65,8 @@ public class HandlerInjector {
             }
         }
 
+        //create and inject handlers
+        List<Field> fieldList = ReflectHelper.findFieldIsAnnotated(rawClass, Inject.class);
         for (Field field : fieldList) {
             try {
                 if (field.getType() == rawClass) {
@@ -90,6 +91,7 @@ public class HandlerInjector {
 
                 handlers.add(handler);
                 handleInstance(handler, field.getType(), info);
+
                 ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(field.getType(), handler, OnHandlerInit.class);
                 innerCore.getFunctionInjector().inspireHandler(handler, info);
                 ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(field.getType(), handler, OnHandlerPostInit.class);

@@ -7,5 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+/**
+ * Inject instance of handler to annotated field.
+ * */
 public @interface Instance {
 }

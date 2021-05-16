@@ -8,8 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 /**
- * Use this annotation to telling core you want to auto inject a handler to your field.
+ * Ask core to inject loaded handler to your field
  * */
-public @interface Inject {
-    String name() default "";
+public @interface Autowired {
 }
