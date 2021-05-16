@@ -1,11 +1,7 @@
 package cn.hyrkg.fastspigot.example;
 
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
 
 @Plugin(name = "ExamplePlugin", version = "1")
