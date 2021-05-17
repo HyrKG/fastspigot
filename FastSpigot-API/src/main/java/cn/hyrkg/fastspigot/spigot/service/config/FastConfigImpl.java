@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FastConfigImp implements IImplementation<IFastYamlConfig> {
+public class FastConfigImpl implements IImplementation<IFastYamlConfig> {
     private IFastYamlConfig handlerInstance;
     private HandlerInfo handlerInfo;
 

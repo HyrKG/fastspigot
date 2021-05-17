@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  *
  * Simply annotate it into your custom service interface, and point to your implementation class!
  * */
-public @interface ImpService {
+public @interface ImplService {
 
     Class<? extends IImplementation> impClass();
 }

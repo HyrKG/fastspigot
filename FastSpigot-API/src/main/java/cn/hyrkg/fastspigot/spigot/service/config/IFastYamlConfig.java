@@ -1,11 +1,11 @@
 package cn.hyrkg.fastspigot.spigot.service.config;
 
-import cn.hyrkg.fastspigot.innercore.annotation.ImpService;
+import cn.hyrkg.fastspigot.innercore.annotation.ImplService;
 import cn.hyrkg.fastspigot.innercore.framework.interfaces.IServiceProvider;
 import cn.hyrkg.fastspigot.spigot.service.ILoggerService;
 import org.bukkit.configuration.ConfigurationSection;
 
-@ImpService(impClass = FastConfigImp.class)
+@ImplService(impClass = FastConfigImpl.class)
 public interface IFastYamlConfig extends IServiceProvider, ILoggerService {
 
     /**
@@ -13,7 +13,7 @@ public interface IFastYamlConfig extends IServiceProvider, ILoggerService {
      * Ignore it if you don't have any other configuration which you need to load it yourself!
      */
     default void reloadConfigurations() {
-        ((FastConfigImp) getImplementation(IFastYamlConfig.class)).reload();
+        ((FastConfigImpl) getImplementation(IFastYamlConfig.class)).reload();
     }
 
     /**

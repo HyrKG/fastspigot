@@ -7,6 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+/**
+ * Annotated it into your handler method and it will be called when it post init!
+ * */
 public @interface OnHandlerPostInit {
 
 }

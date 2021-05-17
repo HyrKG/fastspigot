@@ -13,20 +13,30 @@ import java.util.HashMap;
 public class AsmInjector {
     public final FastInnerCore innerCore;
 
+    /**
+     * Cache of injected class to prevent duplicate inject.
+     */
     private HashMap<Class<?>, Class<?>> injectedClassMap = new HashMap<>();
 
-    @SneakyThrows
     /**
-     * 针对传入的类，注入核心的获取代码，并保存到map中
-     * **/
+     * Inject some basic methods into class.
+     *
+     * @param clazz origin class.
+     * @return injected class.
+     */
+    @SneakyThrows
     public <T> Class<T> inject(Class<T> clazz) {
+        //return if was injected
         if (injectedClassMap.containsKey(clazz))
             return (Class<T>) injectedClassMap.get(clazz);
 
+        //inner core path
         String innerCorePath = "cn/hyrkg/fastspigot/innercore/FastInnerCore";
         String urlPath = ResourceHelper.getPathAsUrl(clazz);
         String tag = "$handler" + "$" + innerCore.getCreator().getClass().getSimpleName();
         String tagPath = urlPath + tag;
+
+        //asm inject
         ClassWriter cw = new ClassWriter(0);
         FieldVisitor fv;
         MethodVisitor mv;
@@ -76,14 +86,9 @@ public class AsmInjector {
         }
         cw.visitEnd();
         Class<T> injectedClazz = null;
-//        try {
-//            injectedClazz = (Class<T>) Class.forName(tagPath);
-//        } catch (ClassNotFoundException e) {
-//            injectedClazz = null;
-//        }
-
 
         if (injectedClazz == null) {
+            //load injected class into classloader
             Method method = ClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
             method.setAccessible(true);
 
@@ -91,14 +96,18 @@ public class AsmInjector {
             injectedClazz = (Class<T>) method.invoke(clazz.getClassLoader(), null, cw.toByteArray(), 0, bytes.length);
         }
 
+        //cache injected class
         injectedClassMap.put(clazz, injectedClazz);
         return injectedClazz;
     }
 
-    @SneakyThrows
     /**
-     * 创建一个目标的实例类，并注入核心。
-     * **/
+     * Create a instance of injected class.
+     *
+     * @param clazz origin class.
+     * @return instance of injected class.
+     **/
+    @SneakyThrows
     public <T> T createWithInjection(Class<T> clazz) {
         T obj = null;
 

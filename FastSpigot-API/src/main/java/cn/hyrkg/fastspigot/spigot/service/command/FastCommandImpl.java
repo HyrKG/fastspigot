@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FastCommandImp implements IImplementation<IFastCommandExecutor>, CommandExecutor {
+public class FastCommandImpl implements IImplementation<IFastCommandExecutor>, CommandExecutor {
 
     @Getter
     private IFastCommandExecutor executorInterface;
