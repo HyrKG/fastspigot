@@ -60,7 +60,7 @@ public interface ILoggerService extends IServiceProvider, ILogger {
     default String locatePath() {
         HandlerInfo info = getHandlerInfo();
         String combine = "";
-        for (HandlerInfo listInfo : info.genPath()) {
+        for (HandlerInfo listInfo : info.getHandlerPath()) {
             combine += (listInfo.injectInfo.name().isEmpty() ? listInfo.originClass.getSimpleName() : listInfo.injectInfo.name()) + ">";
         }
         combine = combine.trim();

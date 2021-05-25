@@ -18,5 +18,8 @@ public class PluginFastSpigot extends JavaPlugin {
         Metrics metrics = new Metrics(this, 11356);
 
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] SUPPORT ENABLED!");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] LEARN MORE ABOUT THIS FRAMEWORK IN GITHUB:");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] (https://)github.com/HyrKG/FastSpigot");
+
     }
 }

@@ -80,6 +80,16 @@ public class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, ILoggerS
         return configurationSection;
     }
 
+    @Override
+    public void saveConfigurationFile(ConfigurationSection section) {
+        //TODO to do nothing here
+    }
+
+    @Override
+    public boolean isAutoGenerateMissingConfig() {
+        return false;
+    }
+
     public void reload() {
         onInit();
         ((FastConfigImp) getImplementation(IFastYamlConfig.class)).reload();

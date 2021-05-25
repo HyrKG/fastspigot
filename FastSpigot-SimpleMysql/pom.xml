@@ -19,8 +19,8 @@
     <dependencies>
         <dependency>
             <groupId>cn.hyrkg.fastspigot</groupId>
-            <artifactId>fastspigot</artifactId>
-            <version>0.0.3</version>
+            <artifactId>fastspigot-api</artifactId>
+            <version>0.0.5</version>
         </dependency>
 
         <dependency>

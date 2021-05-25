@@ -86,7 +86,7 @@ public class DebugHandler implements IPluginProvider, ILoggerService {
         if (handlerInfo == null)
             return debugList.contains(clazz.getSimpleName());
         else {
-            HandlerInfo[] pathInfo = handlerInfo.genPath();
+            HandlerInfo[] pathInfo = handlerInfo.getHandlerPath();
             for (int i = 0; i < pathInfo.length; i++) {
                 String combine = "";
                 for (int k = 0; k < i + 1; k++) {
