@@ -36,7 +36,7 @@
         <dependency>
             <groupId>cn.hyrkg.fastspigot</groupId>
             <artifactId>fastspigot</artifactId>
-            <version>0.1.0.210505</version>
+            <version>0.1.5.210516_1</version>
         </dependency>
 
     </dependencies>

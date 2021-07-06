@@ -8,6 +8,12 @@
     <artifactId>fastspigot</artifactId>
     <version>0.1.5.210516_1</version>
 
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
     <repositories>
         <repository>
             <id>hyrkg</id>
