@@ -41,6 +41,11 @@ public class FastPlugin extends JavaPlugin implements ICoreCreator, ILoggerServi
             public String name() {
                 return getPluginName();
             }
+
+            @Override
+            public int index() {
+                return 0;
+            }
         }, innerCore, null, getClass(), getClass(), this);
         innerCore = new FastInnerCore(this);
 
@@ -54,8 +59,9 @@ public class FastPlugin extends JavaPlugin implements ICoreCreator, ILoggerServi
 
         long injectBefore = System.currentTimeMillis();
         warm("注入处理器中...");
-        innerCore.getHandlerInjector().handleInstance(this, FastPlugin.class, thisInfo);
-        innerCore.getHandlerInjector().handleInstance(this, getClass(), thisInfo);
+        innerCore.getHandlerInjector().initInstance(this, FastPlugin.class, thisInfo);
+        innerCore.getHandlerInjector().initInstance(this, getClass(), thisInfo);
+        innerCore.getHandlerInjector().loadInstance(thisInfo);
         ArrayList<HandlerInfo> handlerInfos = new ArrayList<>();
 
         //print time cost

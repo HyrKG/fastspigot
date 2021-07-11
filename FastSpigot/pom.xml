@@ -6,7 +6,7 @@
 
     <groupId>cn.hyrkg.fastspigot</groupId>
     <artifactId>fastspigot</artifactId>
-    <version>0.1.5.210516_1</version>
+    <version>0.1.6.210711</version>
 
 
     <properties>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>cn.hyrkg.fastspigot</groupId>
             <artifactId>fastspigot-api</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </dependency>
     </dependencies>
 
