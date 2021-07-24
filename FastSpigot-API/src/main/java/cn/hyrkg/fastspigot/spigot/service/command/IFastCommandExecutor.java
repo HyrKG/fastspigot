@@ -27,9 +27,12 @@ public interface IFastCommandExecutor extends IServiceProvider {
     default Player checkPlayer(String playerName) {
         Player player = Bukkit.getPlayer(playerName);
         if (player == null)
-            ((FastCommandImpl) getImplementation(IFastCommandExecutor.class)).throwError(null, playerName + "不在线!");
+            throwError(playerName + "不在线!");
         return player;
     }
 
+    default void throwError(String error) {
+        ((FastCommandImpl) getImplementation(IFastCommandExecutor.class)).throwError(null, error);
+    }
 
 }

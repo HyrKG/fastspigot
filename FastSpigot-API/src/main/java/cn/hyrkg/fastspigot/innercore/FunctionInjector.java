@@ -45,6 +45,7 @@ public class FunctionInjector {
     @SneakyThrows
     /**
      * Inspire A handler
+     * 1.该类将会将一个Handler所有的(需要实例化）服务接口进行实例化
      * */
     public void inspireHandler(Object handler, HandlerInfo handlerInfo) {
         //TODO 查看接口实现，并对接实现
@@ -53,7 +54,10 @@ public class FunctionInjector {
         Set<Class> interfaces = new HashSet<>();
 
         interfaces.addAll(Arrays.asList(clazz.getInterfaces()));
+
+
         //find extends interfaces
+        //将服务接口的父类接口也纳入启发范围，以确保对功能的复用
         Class superClazz = clazz;
         while (superClazz.getSuperclass() != null && !superClazz.getSuperclass().equals(Object.class)) {
             superClazz = superClazz.getSuperclass();
@@ -61,6 +65,7 @@ public class FunctionInjector {
         }
 
         //load interfaces
+        //如果服务接口是实例接口，则启发实例接口，并接入
         for (Class interfaceClazz : interfaces) {
             if (interfaceClazz.isAnnotationPresent(ImplService.class)) {
                 ImplService impService = (ImplService) interfaceClazz.getAnnotation(ImplService.class);

@@ -77,7 +77,7 @@ public class FastPlugin extends JavaPlugin implements ICoreCreator, ILoggerServi
             warm(ChatColor.RESET + " ......");
         }
 
-        warm("注入结束,共注入了" + innerCore.getHandlerInjector().getHandlers().size() + "个处理器! (" + (System.currentTimeMillis() - injectBefore) + "ms)");
+        warm("注入结束,共注入了" + innerCore.getHandlerInjector().getHandlerInfoMap().size() + "个处理器! (" + (System.currentTimeMillis() - injectBefore) + "ms)");
 
         warm("加载完毕! (" + (System.currentTimeMillis() - timeStart) + "ms)");
 

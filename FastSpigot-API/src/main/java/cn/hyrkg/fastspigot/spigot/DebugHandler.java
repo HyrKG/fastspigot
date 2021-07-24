@@ -82,7 +82,7 @@ public class DebugHandler implements IPluginProvider, ILoggerService {
 
         boolean result = false;
 
-        HandlerInfo handlerInfo = getInnerCore().getHandlerInjector().getHandlerInfo(clazz);
+        HandlerInfo handlerInfo = getInnerCore().getHandlerInjector().getHandlerInfo(this);
         if (handlerInfo == null)
             return debugList.contains(clazz.getSimpleName());
         else {

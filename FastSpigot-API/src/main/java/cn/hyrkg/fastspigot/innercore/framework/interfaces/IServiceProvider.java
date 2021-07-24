@@ -19,7 +19,7 @@ public interface IServiceProvider {
      * @return return null if current handler wasn't registered by IoC container.
      */
     default HandlerInfo getHandlerInfo() {
-        return getInnerCore().getHandlerInjector().getHandlerInfo(getClass());
+        return getInnerCore().getHandlerInjector().getHandlerInfo(this);
     }
 
     /**
