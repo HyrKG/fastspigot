@@ -84,6 +84,7 @@ public class FunctionInjector {
 
     }
 
+
     public <T> T getImplementation(Object handler, Class<? extends IServiceProvider> implementationService) {
         if (implMap.containsKey(handler))
             return (T) implMap.get(handler).get(implementationService);

@@ -1,5 +1,6 @@
 package cn.hyrkg.fastspigot.fast.easygui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
@@ -13,12 +14,19 @@ public abstract class EasyGui {
     private boolean verifyClick = true;
     private Player viewer;
 
-    public abstract Inventory createInventory();
+    @Deprecated
+    public Inventory createInventory() {
+        return null;
+    }
+
+    public void createInventory(int size, String title) {
+        this.inv = Bukkit.createInventory(null, size, title);
+    }
 
     public EasyGui(Player p) {
 
         this.viewer = p;
-        inv = createInventory();
+        createInventory(9, "$default_inv");
     }
 
     public Inventory getInv() {

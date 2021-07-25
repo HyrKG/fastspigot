@@ -57,4 +57,9 @@ public abstract class FastPluginConfig implements IFastYamlConfig, IPluginProvid
     public void saveConfigurationFile(ConfigurationSection configurationSection) {
         getPlugin().saveConfig();
     }
+
+    @Override
+    public boolean shouldAutoParser() {
+        return true;
+    }
 }

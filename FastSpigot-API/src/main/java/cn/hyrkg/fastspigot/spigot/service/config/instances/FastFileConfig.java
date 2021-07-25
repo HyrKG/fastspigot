@@ -37,4 +37,9 @@ public abstract class FastFileConfig implements IFastYamlConfig, ILoggerService 
             }
         }
     }
+
+    @Override
+    public boolean shouldAutoParser() {
+        return true;
+    }
 }

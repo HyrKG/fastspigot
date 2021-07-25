@@ -19,7 +19,9 @@ public class FastConfigImpl implements IImplementation<IFastYamlConfig> {
     public void handleHandler(IFastYamlConfig handlerInstance, HandlerInfo handlerInfo) {
         this.handlerInstance = handlerInstance;
         this.handlerInfo = handlerInfo;
-        parserFields(handlerInstance, handlerInfo);
+
+        if (handlerInstance.shouldAutoParser())
+            parserFields(handlerInstance, handlerInfo);
     }
 
     /**
@@ -151,7 +153,11 @@ public class FastConfigImpl implements IImplementation<IFastYamlConfig> {
     }
 
 
-    public void reload() {
+    public void parser() {
         parserFields(handlerInstance, handlerInfo);
+    }
+
+    public void reload() {
+        parser();
     }
 }
