@@ -1,7 +1,7 @@
 # FastSpigot介绍 / Introduction
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cd503329e69a48439a0aa1d8cb115b0b)](https://www.codacy.com/gh/HyrKG/FastSpigot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HyrKG/FastSpigot&amp;utm_campaign=Badge_Grade)
 [![codebeat badge](https://codebeat.co/badges/e83a46a7-aa0a-4dbd-ac26-a68ca734dfd4)](https://codebeat.co/projects/github-com-hyrkg-fastspigot-master)
-![](https://img.shields.io/badge/minecraft-1.12.2-blue.svg)
+![](https://img.shields.io/badge/minecraft-1.8.8+-blue.svg)
 ![](https://img.shields.io/badge/framework-IoC-red.svg)
 ![](https://img.shields.io/badge/language-Java-orange.svg)
 ![](https://img.shields.io/badge/license-GNU-purple.svg)
