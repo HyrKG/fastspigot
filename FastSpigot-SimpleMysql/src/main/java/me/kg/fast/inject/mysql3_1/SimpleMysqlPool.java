@@ -17,20 +17,12 @@ public class SimpleMysqlPool {
 
     public static SimpleMysqlPool init(int size) {
         SimpleMysqlPool pool = new SimpleMysqlPool(size);
-
-
-        pool.connectionKeeper = new Timer();
-        pool.connectionKeeper.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                pool.refresh();
-            }
-        }, 600000, 600000);
+        pool.startHeartbeatTimer(1000 * 60 * 10);
         return pool;
     }
 
     public static SimpleMysqlPool init(int size, String url, String user, String password) throws SQLException {
-        SimpleMysqlPool pool = new SimpleMysqlPool(size);
+        SimpleMysqlPool pool = init(size);
         pool.connect(url, user, password);
         return pool;
     }
@@ -38,6 +30,16 @@ public class SimpleMysqlPool {
 
     private SimpleMysqlPool(int size) {
         this.poolSize = size;
+    }
+
+    public void startHeartbeatTimer(long delay) {
+        connectionKeeper = new Timer();
+        connectionKeeper.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                refresh();
+            }
+        }, delay, delay);
     }
 
     public void refresh() {
@@ -48,20 +50,19 @@ public class SimpleMysqlPool {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public SimpleMysqlPool connect(String url, String user, String password) throws SQLException {
         closePool();
         String tempUrl = url;
-            if (!tempUrl.contains("jdbc:mysql://")) {
-                tempUrl = "jdbc:mysql://" + tempUrl;
-            }
-            for (int i = 0; i < poolSize; i++) {
-                Connection connection = DriverManager.getConnection(tempUrl, user, password);
-                createdConnection.add(ReleasableConnection.link(this, connection));
-            }
-            connectionPool.addAll(createdConnection);
+        if (!tempUrl.contains("jdbc:mysql://")) {
+            tempUrl = "jdbc:mysql://" + tempUrl;
+        }
+        for (int i = 0; i < poolSize; i++) {
+            Connection connection = DriverManager.getConnection(tempUrl, user, password);
+            createdConnection.add(ReleasableConnection.link(this, connection));
+        }
+        connectionPool.addAll(createdConnection);
         return this;
     }
 
