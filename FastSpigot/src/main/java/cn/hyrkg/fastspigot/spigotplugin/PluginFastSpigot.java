@@ -3,6 +3,7 @@ package cn.hyrkg.fastspigot.spigotplugin;
 
 import cn.hyrkg.fastspigot.fast.easygui.EasyGuiHandler;
 import cn.hyrkg.fastspigot.spigotplugin.bstats.Metrics;
+import cn.hyrkg.fastspigot.spigotplugin.support.concurrent.BukkitThreadExecutor;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginLoadOrder;
@@ -19,6 +20,8 @@ public class PluginFastSpigot extends JavaPlugin {
     @Override
     public void onEnable() {
         EasyGuiHandler.init(this);
+        BukkitThreadExecutor.init(this);
+
         metrics = new Metrics(this, 11356);
 
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] SUPPORT ENABLED!");

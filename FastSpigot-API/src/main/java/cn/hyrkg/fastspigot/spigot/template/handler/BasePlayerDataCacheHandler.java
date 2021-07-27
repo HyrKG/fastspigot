@@ -35,6 +35,7 @@ public abstract class BasePlayerDataCacheHandler<T> implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+
         if (cacheMap.containsKey(event.getPlayer()))
             cacheMap.remove(event.getPlayer());
     }
