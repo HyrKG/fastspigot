@@ -6,7 +6,7 @@
 
     <groupId>cn.hyrkg.fastspigot</groupId>
     <artifactId>fastspigot</artifactId>
-    <version>0.1.6.210711</version>
+    <version>0.1.7.211120</version>
 
 
     <properties>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>cn.hyrkg.fastspigot</groupId>
             <artifactId>fastspigot-simplemysql</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>cn.hyrkg.fastspigot</groupId>

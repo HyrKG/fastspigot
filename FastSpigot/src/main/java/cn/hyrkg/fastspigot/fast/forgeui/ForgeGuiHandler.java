@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ForgeGuiHandler implements PluginMessageListener, Listener {
-    public static final String CHANNEL_FORGE_GUI = "fastforgegui";
+    public static final String CHANNEL_FORGE_GUI = "ffg";
 
     private ConcurrentHashMap<Player, BaseForgeGui> viewingForgeGui = new ConcurrentHashMap<>();
 

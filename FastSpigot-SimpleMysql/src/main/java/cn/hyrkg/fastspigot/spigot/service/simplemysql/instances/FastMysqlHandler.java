@@ -85,7 +85,6 @@ public class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, ILoggerS
         //TODO to do nothing here
     }
 
-    @Override
     public boolean shouldAutoParser() {
         return true;
     }

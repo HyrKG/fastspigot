@@ -17,7 +17,7 @@ public class SimpleMysqlPool {
 
     public static SimpleMysqlPool init(int size) {
         SimpleMysqlPool pool = new SimpleMysqlPool(size);
-        pool.startHeartbeatTimer(1000 * 60 * 10);
+        pool.startHeartbeatTimer(1000 * 60 * 5);
         return pool;
     }
 
@@ -44,9 +44,12 @@ public class SimpleMysqlPool {
 
     public void refresh() {
         try {
-            ReleasableConnection rc = getConnection();
-            rc.prepareStatement("SELECT 0 LIMIT 1;").executeQuery();
-            rc.release();
+            for (ReleasableConnection connection : connectionPool) {
+                connection.prepareStatement("SELECT 0 LIMIT 1;").executeQuery();
+            }
+//            ReleasableConnection rc = getConnection();
+//            rc.prepareStatement("SELECT 0 LIMIT 1;").executeQuery();
+//            rc.release();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,6 +60,9 @@ public class SimpleMysqlPool {
         String tempUrl = url;
         if (!tempUrl.contains("jdbc:mysql://")) {
             tempUrl = "jdbc:mysql://" + tempUrl;
+        }
+        if (!tempUrl.contains("?")) {
+            tempUrl += "?autoReconnect=true";
         }
         for (int i = 0; i < poolSize; i++) {
             Connection connection = DriverManager.getConnection(tempUrl, user, password);
