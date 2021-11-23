@@ -28,7 +28,7 @@ public class SimpleMysqlPool {
     }
 
 
-    private SimpleMysqlPool(int size) {
+    public SimpleMysqlPool(int size) {
         this.poolSize = size;
     }
 

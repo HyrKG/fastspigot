@@ -1,5 +1,7 @@
 package me.kg.fast.inject.mysql3_1;
 
+import lombok.Getter;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,7 +9,8 @@ import java.sql.SQLException;
 public class ReleasableConnection {
 
 	private SimpleMysqlPool thePool;
-	private Connection theConnection;
+	@Getter
+	private Connection connection;
 
 	public void release() {
 		thePool.returnConnection(this);
@@ -15,7 +18,7 @@ public class ReleasableConnection {
 
 	private ReleasableConnection(SimpleMysqlPool pool, Connection connection) {
 		this.thePool = pool;
-		this.theConnection = connection;
+		this.connection = connection;
 	}
 
 	public static ReleasableConnection link(SimpleMysqlPool pool, Connection connection) {
@@ -24,7 +27,7 @@ public class ReleasableConnection {
 
 	public void close() {
 		try {
-			theConnection.close();
+			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +35,7 @@ public class ReleasableConnection {
 
 	public PreparedStatement prepareStatement(String mysql) {
 		try {
-			return theConnection.prepareStatement(mysql);
+			return connection.prepareStatement(mysql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -1,0 +1,8 @@
+enable: false
+#expiration time in seconds
+expiration: 15
+#make sure you create a new database as mysql-locker database!
+mysql:
+  url: 'localhost:3306/mysqllocker'
+  user: 'root'
+  password: ''
