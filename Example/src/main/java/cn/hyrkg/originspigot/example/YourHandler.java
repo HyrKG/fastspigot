@@ -3,7 +3,6 @@ package cn.hyrkg.originspigot.example;
 import cn.hyrkg.fastspigot.spigot.service.command.FastCommand;
 import cn.hyrkg.fastspigot.spigot.service.command.IFastCommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class YourHandler implements IFastCommandExecutor {
 
