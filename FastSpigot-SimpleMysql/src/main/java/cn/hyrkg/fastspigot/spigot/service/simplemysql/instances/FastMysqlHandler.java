@@ -30,6 +30,8 @@ public class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, ILoggerS
     @AutoLoad
     protected String pwd = "";
     @AutoLoad
+    protected int size = 20;
+    @AutoLoad
     protected String table = "defaultTable";
 
     private ConfigurationSection configurationSection;
@@ -57,6 +59,7 @@ public class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, ILoggerS
             configurationSection.set("user", user);
             configurationSection.set("pwd", pwd);
             configurationSection.set("table", table);
+            configurationSection.set("size", size);
             cfg.save(file);
         }
         configurationSection = cfg.getConfigurationSection(getMysqlPoolName());
@@ -65,7 +68,7 @@ public class FastMysqlHandler implements ISimpleMysql, IFastYamlConfig, ILoggerS
             pool.closePool();
 
         try {
-            pool = SimpleMysqlPool.init(10, configurationSection.getString("url"), configurationSection.getString("user"), configurationSection.getString("pwd"));
+            pool = SimpleMysqlPool.init(size, configurationSection.getString("url"), configurationSection.getString("user"), configurationSection.getString("pwd"));
         } catch (MySQLSyntaxErrorException e) {
             error("Mysql error in " + getHandlerInfo().originClass.getSimpleName() + ": " + e.getMessage());
         }

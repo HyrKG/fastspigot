@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
 public interface ILoggerService extends IServiceProvider, ILogger {
+
+
     default void info(String str) {
         String combine = locatePath();
 

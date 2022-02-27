@@ -10,11 +10,14 @@ import java.lang.annotation.Target;
 public @interface FastCommand {
     String index() default "";
 
-    boolean requireOp() default false;
-
-    String[] paramsName() default {};
-
     String desc();
 
+    //是否需要OP权限
+    boolean requireOp() default false;
+
+    //阐述参数的类型
+    String[] paramsName() default {};
+
+    //阐述指令排序
     int order() default 0;
 }

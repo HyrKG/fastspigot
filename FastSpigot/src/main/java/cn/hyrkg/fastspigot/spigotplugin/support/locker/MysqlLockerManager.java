@@ -34,6 +34,11 @@ public class MysqlLockerManager {
     @Getter
     private static HashMap<String, MysqlLocker> lockers = new HashMap<>();
 
+    /**
+     * 获取MysqlLocker，如果不存在则创建。
+     *
+     * @param tableName 通常对应您的功能。
+     */
     public static MysqlLocker getOrCreateLocker(String tableName) {
         if (!lockers.containsKey(tableName)) {
             MysqlLocker locker = new MysqlLocker(tableName);
@@ -70,10 +75,12 @@ public class MysqlLockerManager {
         expirationTime = configHelper.key("expiration").ofInt(15);
         //load if is enabled
         String url = null, user = null, password = null;
+        int size = 88;
         if (enable) {
             url = configHelper.key("mysql.url").ofStr();
             user = configHelper.key("mysql.user").ofStr();
             password = configHelper.key("mysql.password").ofStr();
+            size = configHelper.key("mysql.poolSize").ofInt(88);
         }
 
         lockers.clear();
@@ -86,7 +93,7 @@ public class MysqlLockerManager {
         try {
             //enable
             if (enable) {
-                simpleMysqlPool = SimpleMysqlPool.init(10);
+                simpleMysqlPool = SimpleMysqlPool.init(size);
                 simpleMysqlPool.connect(url, user, password);
             }
         } catch (Exception exception) {

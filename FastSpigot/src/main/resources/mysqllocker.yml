@@ -6,3 +6,4 @@ mysql:
   url: 'localhost:3306/mysqllocker'
   user: 'root'
   password: ''
+  size: 100

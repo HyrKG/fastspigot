@@ -26,7 +26,7 @@ public class AsynLock implements ILock {
     protected final MysqlLocker locker;
     protected final String key;
 
-    protected Queue<Runnable> runnableQueue = new ConcurrentLinkedQueue<>();
+    protected Queue<FutureTask> runnableQueue = new ConcurrentLinkedQueue<>();
     protected FutureTask<Void> futureTask = null;
 
     @Override
@@ -59,18 +59,27 @@ public class AsynLock implements ILock {
         return task;
     }
 
-    public synchronized void addWaitingExecutor(Runnable runnable) {
-        runnableQueue.add(runnable);
+    public synchronized FutureTask addWaitingExecutor(Runnable runnable) {
+        FutureTask futureTaskInput = new FutureTask(() -> {
+            runnable.run();
+            return null;
+        });
+
+        runnableQueue.add(futureTaskInput);
         if (futureTask == null || futureTask.isDone() || futureTask.isCancelled()) {
             MysqlLockerManager.getExecutorService().execute(futureTask = new FutureTask<>(this::startQueue));
         }
+        return futureTask;
     }
 
     @SneakyThrows
     public Void startQueue() {
         while (!runnableQueue.isEmpty()) {
             while (!isLocked()) {
-                runnableQueue.poll().run();
+                FutureTask task = runnableQueue.poll();
+                if (!task.isCancelled()) {
+                    task.run();
+                }
                 //Sleep to wait for lock if is needed
                 Thread.sleep(5);
             }

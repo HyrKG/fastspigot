@@ -28,8 +28,13 @@ public class EmptyLock implements ILock {
     }
 
     @Override
-    public void addWaitingExecutor(Runnable runnable) {
-        runnable.run();
+    public FutureTask addWaitingExecutor(Runnable runnable) {
+        FutureTask task = new FutureTask(() -> {
+            runnable.run();
+            return null;
+        });
+        task.run();
+        return task;
     }
 
     @Override
