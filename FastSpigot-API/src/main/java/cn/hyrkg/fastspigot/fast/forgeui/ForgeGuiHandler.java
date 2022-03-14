@@ -43,6 +43,16 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     }
 
     /**
+     * 向客户端发送消息
+     */
+    public void sendMessage(SimpleMsg msg, BaseForgeGui baseForgeGui) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("uuid", baseForgeGui.getUuid().toString());
+        jsonObject.add("msg", msg.getJsonObj()                                                                                             );
+        forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), jsonObject.toString());
+    }
+
+    /**
      * 对所有使用中的界面探测更新
      */
     private void update() {
@@ -63,6 +73,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         changes.addProperty("uuid", baseForgeGui.getUuid().toString());
         forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), changes.toString());
     }
+
 
     /**
      * 通知客户端展示界面

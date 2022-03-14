@@ -46,4 +46,8 @@ public class BaseForgeGui {
             guiHandler.updateChanges(this);
         }
     }
+
+    public SimpleMsg msg() {
+        return SimpleMsg.create(this, guiHandler);
+    }
 }

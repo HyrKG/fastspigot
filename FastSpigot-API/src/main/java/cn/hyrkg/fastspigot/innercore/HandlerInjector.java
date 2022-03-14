@@ -2,10 +2,7 @@ package cn.hyrkg.fastspigot.innercore;
 
 import cn.hyrkg.fastspigot.innercore.annotation.Inject;
 import cn.hyrkg.fastspigot.innercore.annotation.Instance;
-import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerDisable;
-import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerInit;
-import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerLoad;
-import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerPostInit;
+import cn.hyrkg.fastspigot.innercore.annotation.events.*;
 import cn.hyrkg.fastspigot.innercore.framework.HandlerInfo;
 import cn.hyrkg.fastspigot.innercore.utils.ReflectHelper;
 import lombok.Getter;
@@ -93,6 +90,7 @@ public class HandlerInjector {
             return ((Integer) injectInfoLeft.index()).compareTo(injectInfoRight.index());
         });
 
+
         //3.遍历所有@Inject标签的变量，进行注入
         //foreach all fields then create and inject
         for (Field field : fieldList) {
@@ -123,6 +121,8 @@ public class HandlerInjector {
                 if (parentInfo != null)
                     parentInfo.addChildInfo(info);
                 handlerInfoMap.put(handler, info);
+
+                ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(field.getType(), handler, OnHandlerPreInit.class);
 
                 //inject other handlers of this handler
                 //3.对该处理器内的，其他处理器进行初始化
