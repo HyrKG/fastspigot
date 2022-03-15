@@ -11,7 +11,7 @@
     <repositories>
         <repository>
             <id>hyrkg</id>
-            <url>hyrkg.cn:88/repository/maven-public/</url>
+            <url>148.70.77.102:88/repository/maven-public/</url>
         </repository>
     </repositories>
 
