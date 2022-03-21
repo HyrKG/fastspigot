@@ -23,10 +23,12 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>BungeeCord</artifactId>
-            <version>0</version>
+            <version>1</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/BungeeCord.jar</systemPath>
         </dependency>
+
+
     </dependencies>
 
 </project>

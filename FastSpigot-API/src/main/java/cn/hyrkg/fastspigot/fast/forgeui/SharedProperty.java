@@ -137,6 +137,6 @@ public class SharedProperty extends JsonProperty {
     }
 
     public boolean hasProperty(String key) {
-        return super.hasProperty(key)||propertyHashMap.containsKey(key);
+        return super.hasProperty(key) || propertyHashMap.containsKey(key);
     }
 }

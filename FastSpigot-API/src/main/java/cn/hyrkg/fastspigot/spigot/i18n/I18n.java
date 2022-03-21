@@ -5,8 +5,7 @@ import com.google.common.base.Preconditions;
 public class I18n {
     /**
      * format
-     *
-     * **/
+     **/
     public static String formatNature(String input, Object... objects) {
         Preconditions.checkNotNull(input);
         String langInput = input.trim().replaceAll("\\s+", "_").toLowerCase();

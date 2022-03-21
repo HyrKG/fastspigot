@@ -7,48 +7,40 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.UnsupportedEncodingException;
 
-public class SimpleModNetwork
-{
-	private JavaPlugin plugin;
+public class SimpleModNetwork {
+    private JavaPlugin plugin;
 
-	private boolean enable = false;
-	private String channel;
+    private boolean enable = false;
+    private String channel;
 
-	public SimpleModNetwork(String channel)
-	{
+    public SimpleModNetwork(String channel) {
 
-		this.channel = channel;
-	}
+        this.channel = channel;
+    }
 
-	public SimpleModNetwork init(JavaPlugin plugin)
-	{
-		this.plugin = plugin;
-		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, channel);
-		enable = true;
-		return this;
-	}
+    public SimpleModNetwork init(JavaPlugin plugin) {
+        this.plugin = plugin;
+        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, channel);
+        enable = true;
+        return this;
+    }
 
-	public SimpleModNetwork registerCallback(PluginMessageListener pml)
-	{
+    public SimpleModNetwork registerCallback(PluginMessageListener pml) {
 
-		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, channel, pml);
+        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, channel, pml);
 
-		return this;
-	}
+        return this;
+    }
 
-	public void sendPluginMessage(Player target, String str)
-	{
-		try
-		{
-			target.sendPluginMessage(plugin, channel, ("@" + str).getBytes("UTF-8"));
-		} catch (UnsupportedEncodingException e)
-		{
-			e.printStackTrace();
-		}
-	}
+    public void sendPluginMessage(Player target, String str) {
+        try {
+            target.sendPluginMessage(plugin, channel, ("@" + str).getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public boolean isEnable()
-	{
-		return enable;
-	}
+    public boolean isEnable() {
+        return enable;
+    }
 }

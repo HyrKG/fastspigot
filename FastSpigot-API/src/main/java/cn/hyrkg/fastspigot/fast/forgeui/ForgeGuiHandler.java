@@ -48,7 +48,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public void sendMessage(SimpleMsg msg, BaseForgeGui baseForgeGui) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", baseForgeGui.getUuid().toString());
-        jsonObject.add("msg", msg.getJsonObj()                                                                                             );
+        jsonObject.add("msg", msg.getJsonObj());
         forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), jsonObject.toString());
     }
 
