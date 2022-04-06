@@ -1,6 +1,7 @@
-package cn.hyrkg.fastspigot.fast.forgeui;
+package cn.hyrkg.fastspigot.fast.forgeui.old;
 
-import com.google.common.base.Preconditions;
+import cn.hyrkg.fastspigot.fast.forgeui.PropertyShader;
+import cn.hyrkg.fastspigot.fast.forgeui.SharedProperty;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -78,9 +79,11 @@ public class JsonProperty {
             if (completeJson.has(key))
                 completeJson.remove(key);
         } else {
-            if (value instanceof SharedProperty) {
-                setProperty(key, ((SharedProperty) value).getCompleteJson());
-            } else if (value instanceof JsonObject) {
+            if (value instanceof JsonProperty) {
+                setProperty(key, ((JsonProperty) value).getCompleteJson());
+            } else if (value instanceof PropertyShader)
+                setProperty(key, ((PropertyShader) value).getProperty());
+            else if (value instanceof JsonObject) {
                 completeJson.add(key, (JsonObject) value);
             } else if (value instanceof JsonElement) {
                 completeJson.add(key, (JsonElement) value);
@@ -111,7 +114,7 @@ public class JsonProperty {
             if (obj instanceof JsonProperty) {
                 array.add(((JsonProperty) obj).completeJson);
             } else if (obj instanceof PropertyShader) {
-                array.add(((PropertyShader) obj).property.completeJson);
+                array.add(((PropertyShader) obj).property.getCompleteJson());
             } else {
                 array.add(String.valueOf(obj));
             }

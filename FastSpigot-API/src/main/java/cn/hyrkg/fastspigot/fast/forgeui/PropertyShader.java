@@ -1,13 +1,15 @@
 package cn.hyrkg.fastspigot.fast.forgeui;
 
-public class PropertyShader {
-    public final JsonProperty property;
+import cn.hyrkg.fastspigot.fast.forgeui.old.JsonProperty;
 
-    public PropertyShader(JsonProperty property) {
+public class PropertyShader {
+    public final SharedProperty property;
+
+    public PropertyShader(SharedProperty property) {
         this.property = property;
     }
 
-    public JsonProperty getProperty() {
+    public SharedProperty getProperty() {
         return property;
     }
 

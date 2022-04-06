@@ -1,32 +1,44 @@
 package cn.hyrkg.fastspigot.fast.forgeui;
 
+import cn.hyrkg.fastspigot.fast.forgeui.old.JsonProperty;
 import com.google.gson.JsonArray;
+import lombok.SneakyThrows;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.util.UUID;
 
 public class JsonContent<T> {
     private final Class tClass;
+    private final Constructor shaderConstructor;
 
-    public final JsonProperty property;
+    public final SharedProperty property;
     public final String key;
 
     protected boolean flagEmptyStringReturn = false;
 
-    public JsonContent(JsonProperty property, String key) {
+    @SneakyThrows
+    public JsonContent(SharedProperty property, String key) {
         this.property = property;
         this.key = key;
 
         tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-
+        if (tClass.isAssignableFrom(PropertyShader.class)) {
+            shaderConstructor = tClass.getConstructor(JsonProperty.class);
+        } else {
+            shaderConstructor = null;
+        }
     }
 
     public boolean has() {
         return property.hasProperty(key);
     }
 
-    public void set(Object value) {
-        property.setProperty(key, value);
+    public void set(T value) {
+        if (value != null && value instanceof UUID)
+            property.setProperty(key, ((UUID) value).toString());
+        else
+            property.setProperty(key, value);
     }
 
 
@@ -45,9 +57,15 @@ public class JsonContent<T> {
             return (T) getJsonArray();
         else if (tClass.equals(UUID.class)) {
             return ((T) UUID.fromString(getString()));
-        } else if (tClass.asSubclass(PropertyShader.class)) {
-
-
+        } else if (tClass.isAssignableFrom(PropertyShader.class)) {
+            SharedProperty theProperty = property.getAsProperty(key);
+            if (theProperty == null)
+                return null;
+            try {
+                return (T) shaderConstructor.newInstance(theProperty);
+            } catch (Exception e) {
+                return null;
+            }
         }
         return (T) null;
     }
