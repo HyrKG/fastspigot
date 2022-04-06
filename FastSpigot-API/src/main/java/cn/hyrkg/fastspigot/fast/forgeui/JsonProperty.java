@@ -1,8 +1,14 @@
 package cn.hyrkg.fastspigot.fast.forgeui;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.SneakyThrows;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonProperty {
     // raw obj
@@ -64,6 +70,9 @@ public class JsonProperty {
         return null;
     }
 
+    /*
+     * 设置内容
+     * */
     public void setProperty(String key, Object value) {
         if (value == null) {
             if (completeJson.has(key))
@@ -83,9 +92,61 @@ public class JsonProperty {
                 completeJson.addProperty(key, (Boolean) value);
             } else if (value instanceof Character) {
                 completeJson.addProperty(key, (Character) value);
+            } else if (value instanceof List) {
+                JsonArray array = getArrayFromList(key, (List<?>) value);
+                completeJson.add(key, array);
             }
         }
     }
+
+
+    /**
+     * 将List转换为JsonArray。
+     * 仅支持JsonProperty或PropertyShader，其他一律被转换为String存入。
+     */
+    public JsonArray getArrayFromList(String key, List<?> value) {
+        JsonArray array = new JsonArray();
+
+        for (Object obj : value) {
+            if (obj instanceof JsonProperty) {
+                array.add(((JsonProperty) obj).completeJson);
+            } else if (obj instanceof PropertyShader) {
+                array.add(((PropertyShader) obj).property.completeJson);
+            } else {
+                array.add(String.valueOf(obj));
+            }
+        }
+
+        return array;
+    }
+
+    /*
+     *  将JsonArray读出为PropertyShader
+     * */
+    @SneakyThrows
+    public <T extends PropertyShader> List<T> getListFromArray(String key, Class<T> clazz) {
+
+        Constructor<T> constructor = clazz.getConstructor(JsonProperty.class);
+
+        List<T> list = new ArrayList<>();
+
+        JsonElement element = getCompleteJson().get(key);
+        if (element != null && element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            array.forEach(j -> {
+                JsonObject jsonObject = j.getAsJsonObject();
+
+                try {
+                    T t = constructor.newInstance(new JsonProperty(jsonObject));
+                    list.add(t);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        return list;
+    }
+
 
     public boolean hasProperty(String key) {
         return completeJson.has(key);
@@ -130,6 +191,14 @@ public class JsonProperty {
         JsonProperty property = new JsonProperty();
         setProperty(key, property);
         return property;
+    }
+
+    @Deprecated
+    /**
+     * 废弃方法，请勿使用。
+     */
+    public SharedProperty getOrCreateSharedProperty(String key) {
+        return getOrCreateSharedProperty(key);
     }
 
 }
