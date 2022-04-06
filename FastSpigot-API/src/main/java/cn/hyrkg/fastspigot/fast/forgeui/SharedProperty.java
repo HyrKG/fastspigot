@@ -48,13 +48,6 @@ public class SharedProperty extends JsonProperty {
         return updated;
     }
 
-    public SharedProperty getOrCreateSharedProperty(String key) {
-        if (hasProperty(key))
-            return getAsProperty(key);
-        SharedProperty property = new SharedProperty();
-        setProperty(key, property);
-        return property;
-    }
 
     public void setProperty(String key, Object value) {
         if (value == null) {
@@ -138,5 +131,14 @@ public class SharedProperty extends JsonProperty {
 
     public boolean hasProperty(String key) {
         return super.hasProperty(key) || propertyHashMap.containsKey(key);
+    }
+
+    @Override
+    public JsonProperty getOrCreateProperty(String key) {
+        if (hasProperty(key))
+            return getAsProperty(key);
+        SharedProperty property = new SharedProperty();
+        setProperty(key, property);
+        return property;
     }
 }

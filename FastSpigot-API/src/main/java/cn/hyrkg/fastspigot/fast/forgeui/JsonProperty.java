@@ -70,7 +70,7 @@ public class JsonProperty {
                 completeJson.remove(key);
         } else {
             if (value instanceof SharedProperty) {
-                setProperty(key, ((SharedProperty) value).completeJson);
+                setProperty(key, ((SharedProperty) value).getCompleteJson());
             } else if (value instanceof JsonObject) {
                 completeJson.add(key, (JsonObject) value);
             } else if (value instanceof JsonElement) {
@@ -124,8 +124,12 @@ public class JsonProperty {
         shader = null;
     }
 
-    public SharedProperty getOrCreateSharedProperty(String key) {
-        return null;
+    public JsonProperty getOrCreateProperty(String key) {
+        if (hasProperty(key))
+            return getAsProperty(key);
+        JsonProperty property = new JsonProperty();
+        setProperty(key, property);
+        return property;
     }
 
 }
