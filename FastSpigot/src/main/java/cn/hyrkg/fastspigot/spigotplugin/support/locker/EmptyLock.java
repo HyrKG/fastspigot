@@ -46,4 +46,9 @@ public class EmptyLock implements ILock {
         futureTask.run();
         return futureTask;
     }
+
+    @Override
+    public ILock setExpirationTime(long sec) {
+        return this;
+    }
 }

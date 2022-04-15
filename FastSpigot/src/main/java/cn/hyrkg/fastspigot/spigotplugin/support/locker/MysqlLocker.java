@@ -13,6 +13,8 @@ public class MysqlLocker implements ISimpleMysql {
 
     public static final String FLAG_UUID = "uuid", FLAG_LOCK = "lok", FLAG_LAST = "last", FLAG_DATA = "ext";
 
+    private long expirationTime = MysqlLockerManager.getExpirationTime();
+
     @SneakyThrows
     /**
      * 创建数据库的表。
@@ -43,8 +45,13 @@ public class MysqlLocker implements ISimpleMysql {
      */
     public ILock getLock(String key) {
         if (MysqlLockerManager.isEnabled())
-            return new AsynLock(this, key);
+            return new AsynLock(this, key).setExpirationTime(expirationTime);
         return EmptyLock.EMPTY_LOCK;
+    }
+
+    public MysqlLocker setExpirationTime(long sec) {
+        this.expirationTime = sec;
+        return this;
     }
 
     @Override

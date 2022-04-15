@@ -166,8 +166,8 @@ public class HandlerInjector {
      * Call when disable,don't try to call it yourself!
      */
     public void onDisable() {
-        handlerInjectCost.forEach((left, right) -> {
-            ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(left.originClass, right, OnHandlerDisable.class);
+        handlerInfoMap.forEach((left, right) -> {
+            ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(right.originClass, left, OnHandlerDisable.class);
         });
 //        handlers.forEach(j -> {
 //            ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(getHandlerInfo(j.getClass()).originClass, j, OnHandlerDisable.class);

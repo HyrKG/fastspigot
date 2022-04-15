@@ -1,6 +1,5 @@
 package cn.hyrkg.fastspigot.fast.forgeui;
 
-import cn.hyrkg.fastspigot.fast.forgeui.old.JsonProperty;
 import com.google.gson.JsonArray;
 import lombok.SneakyThrows;
 
@@ -24,7 +23,7 @@ public class JsonContent<T> {
 
         tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         if (tClass.isAssignableFrom(PropertyShader.class)) {
-            shaderConstructor = tClass.getConstructor(JsonProperty.class);
+            shaderConstructor = tClass.getConstructor(SharedProperty.class);
         } else {
             shaderConstructor = null;
         }

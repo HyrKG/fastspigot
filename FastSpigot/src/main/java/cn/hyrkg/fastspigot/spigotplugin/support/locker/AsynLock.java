@@ -28,6 +28,7 @@ public class AsynLock implements ILock {
 
     protected Queue<FutureTask> runnableQueue = new ConcurrentLinkedQueue<>();
     protected FutureTask<Void> futureTask = null;
+    protected long expirationTime = 15;
 
     @Override
     public boolean isLocked() {
@@ -37,7 +38,7 @@ public class AsynLock implements ILock {
 
             //if is expiration, then unlock
             if (lastUpdate > 0) {
-                if (System.currentTimeMillis() - lastUpdate > MysqlLockerManager.getExpirationTime() * 1000) {
+                if (System.currentTimeMillis() - lastUpdate > expirationTime * 1000) {
                     lockDataState = false;
                 }
             }
@@ -57,6 +58,12 @@ public class AsynLock implements ILock {
         });
         MysqlLockerManager.getExecutorService().execute(task);
         return task;
+    }
+
+    @Override
+    public ILock setExpirationTime(long time) {
+        this.expirationTime = time;
+        return this;
     }
 
     public synchronized FutureTask addWaitingExecutor(Runnable runnable) {

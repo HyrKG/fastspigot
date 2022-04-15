@@ -1,6 +1,5 @@
 package cn.hyrkg.fastspigot.fast.forgeui;
 
-import cn.hyrkg.fastspigot.fast.forgeui.old.JsonProperty;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -218,14 +217,14 @@ public class SharedProperty {
     /**
      * 废弃方法，请勿使用。
      */ public SharedProperty getOrCreateSharedProperty(String key) {
-        return getOrCreateSharedProperty(key);
+        return getOrCreateProperty(key);
     }
 
     public JsonArray getArrayFromList(String key, List<?> value) {
         JsonArray array = new JsonArray();
 
         for (Object obj : value) {
-            if (obj instanceof JsonProperty) {
+            if (obj instanceof SharedProperty) {
                 array.add(((SharedProperty) obj).completeJson);
             } else if (obj instanceof PropertyShader) {
                 array.add(((PropertyShader) obj).property.completeJson);
@@ -240,7 +239,7 @@ public class SharedProperty {
     @SneakyThrows
     public <T extends PropertyShader> List<T> getListFromArray(String key, Class<T> clazz) {
 
-        Constructor<T> constructor = clazz.getConstructor(JsonProperty.class);
+        Constructor<T> constructor = clazz.getConstructor(SharedProperty.class);
 
         List<T> list = new ArrayList<>();
 
@@ -251,7 +250,7 @@ public class SharedProperty {
                 JsonObject jsonObject = j.getAsJsonObject();
 
                 try {
-                    T t = constructor.newInstance(new JsonProperty(jsonObject));
+                    T t = constructor.newInstance(new SharedProperty(jsonObject));
                     list.add(t);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -272,7 +271,7 @@ public class SharedProperty {
     public <T extends PropertyShader> T getAsShader(Class<T> shaderClazz) {
         try {
             if (this.shader == null || !this.shader.getClass().equals(shaderClazz)) {
-                return (T) (this.shader = shaderClazz.getConstructor(JsonProperty.class).newInstance(this));
+                return (T) (this.shader = shaderClazz.getConstructor(SharedProperty.class).newInstance(this));
             }
             return (T) this.shader;
 

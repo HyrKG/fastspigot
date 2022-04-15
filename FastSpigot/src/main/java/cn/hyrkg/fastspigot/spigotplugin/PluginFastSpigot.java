@@ -1,6 +1,7 @@
 package cn.hyrkg.fastspigot.spigotplugin;
 
 
+import cn.hyrkg.fastspigot.fast.actionjam.FastJam;
 import cn.hyrkg.fastspigot.fast.easygui.EasyGuiHandler;
 import cn.hyrkg.fastspigot.spigotplugin.bstats.Metrics;
 import cn.hyrkg.fastspigot.spigotplugin.command.CommandFastSpigot;
@@ -35,6 +36,7 @@ public class PluginFastSpigot extends JavaPlugin {
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
         EasyGuiHandler.init(this);
+        FastJam.init(this);
         BukkitThreadExecutor.init(this);
         MysqlLockerManager.init(this);
 
