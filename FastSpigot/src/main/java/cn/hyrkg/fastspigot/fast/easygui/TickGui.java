@@ -2,13 +2,11 @@ package cn.hyrkg.fastspigot.fast.easygui;
 
 import org.bukkit.entity.Player;
 
-public abstract class TickGui extends EasyGui
-{
+public abstract class TickGui extends EasyGui {
 
-	public TickGui(Player p)
-	{
-		super(p);
-	}
+    public TickGui(Player p) {
+        super(p);
+    }
 
-	public abstract void tick();
+    public abstract void tick();
 }

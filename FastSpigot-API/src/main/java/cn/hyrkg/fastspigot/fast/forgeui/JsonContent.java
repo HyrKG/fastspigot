@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 import java.util.UUID;
 
 public class JsonContent<T> {
@@ -17,11 +16,12 @@ public class JsonContent<T> {
     protected boolean flagEmptyStringReturn = false;
 
     @SneakyThrows
-    public JsonContent(SharedProperty property, String key) {
+    public JsonContent(SharedProperty property, String key, Class returnClazz) {
         this.property = property;
         this.key = key;
 
-        tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        tClass = returnClazz;
+
         if (tClass.isAssignableFrom(PropertyShader.class)) {
             shaderConstructor = tClass.getConstructor(SharedProperty.class);
         } else {

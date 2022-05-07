@@ -220,7 +220,7 @@ public class SharedProperty {
         return getOrCreateProperty(key);
     }
 
-    public JsonArray getArrayFromList(String key, List<?> value) {
+    public JsonArray getArrayFromList(List<?> value) {
         JsonArray array = new JsonArray();
 
         for (Object obj : value) {
