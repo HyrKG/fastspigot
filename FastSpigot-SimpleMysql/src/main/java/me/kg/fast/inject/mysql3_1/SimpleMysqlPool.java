@@ -62,7 +62,7 @@ public class SimpleMysqlPool {
             tempUrl = "jdbc:mysql://" + tempUrl;
         }
         if (!tempUrl.contains("?")) {
-            tempUrl += "?autoReconnect=true";
+            tempUrl += "?autoReconnect=true&useSSL=false";
         }
         for (int i = 0; i < poolSize; i++) {
             Connection connection = DriverManager.getConnection(tempUrl, user, password);

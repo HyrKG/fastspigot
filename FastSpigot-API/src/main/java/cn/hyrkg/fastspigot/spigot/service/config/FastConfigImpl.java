@@ -116,6 +116,8 @@ public class FastConfigImpl implements IImplementation<IFastYamlConfig> {
             return configurationSection.getDouble(path);
         else if (type.equals(int.class) || type.equals(Integer.class))
             return configurationSection.getInt(path);
+        else if (type.equals(boolean.class) || type.equals(Boolean.class))
+            return configurationSection.getBoolean(path);
         else if (type.equals(ArrayList.class) || type.equals(List.class)) {
             ArrayList<String> list = new ArrayList<>();
             list.addAll(configurationSection.getStringList(path));

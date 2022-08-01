@@ -31,6 +31,8 @@ public class FastCommandImpl implements IImplementation<IFastCommandExecutor>, C
     public void handleHandler(IFastCommandExecutor executor, HandlerInfo handlerInfo) {
         this.executorInterface = executor;
 
+
+
         if (handlerInfo.innerCore.getCreator() instanceof FastPlugin) {
             FastPlugin plugin = (FastPlugin) handlerInfo.innerCore.getCreator();
 
