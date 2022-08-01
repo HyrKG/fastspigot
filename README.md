@@ -18,8 +18,6 @@
 
 > ### 了解更多 / Learn More
 > __中文文档:__ https://fastspigot.doc.hyrkg.cn/
->
-> __English Document:__ Coming soon...
 
 > 该项目主要为学习用途，很多专业知识并不具备，若有错误请指出！
 >
