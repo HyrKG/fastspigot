@@ -16,7 +16,6 @@
 - 使用接口实现服务，易于调用。
 - 减少不必要的冗余代码。
 
-> ### 了解更多 / Learn More
 > __中文文档:__ https://fastspigot.doc.hyrkg.cn/
 
 > 该项目主要为学习用途，很多专业知识并不具备，若有错误请指出！
@@ -34,21 +33,8 @@
 
 #### 接口不只是接口，同样可以提供服务 / Interface can also provide service
 
-在该框架中，接口已经脱离了接口的作用，而同样作为服务提供者，如以下为有效代码。
+在该框架中，接口已经脱离了接口的作用，而同样作为服务提供者。
 
-```Java
-public class ExampleFastPlugin extends FastPlugin { 
-    @Inject
-    public YourHandler yourFastCommandExecutor;
-}
-
-class YourHandler implements ILoggerService {
-    @OnHandlerInit
-    public void onInit() {
-        debug("INIT METHOD CALLED!");
-    }
-}
-```
 
 # 前后对比 / Before and After
 
@@ -66,15 +52,6 @@ public class ExampleOriginPlugin extends JavaPlugin {
         yourHandler.onInit();
     }
 }
-
-class YourHandler {
-
-    public void onInit()
-    {
-
-    }
-}
-
 //##################################################################
 
 //使用后 After
@@ -86,9 +63,11 @@ public class ExampleFastPlugin extends FastPlugin {
 
 class YourHandler{
 
+    /**
+    * 在此进行初始化
+    **/
     @OnHandlerInit
-    public void onInit() {
-    }
+    void onInit();
 }
 ```
 
@@ -103,26 +82,12 @@ public class ExampleOriginPlugin extends JavaPlugin {
     }
 }
 
-class YourEventHandler implements Listener {
-    @EventHandler
-    public void onEvent(Event event) {
-        //TODO
-    }
-}
-
 //##################################################################
 
 //使用后 After
 public class ExampleFastPlugin extends FastPlugin {
     @Inject
     public YourEventHandler yourEventHandler;
-}
-
-class YourEventHandler implements Listener {
-    @EventHandler
-    public void onEvent(Event event) {
-        //TODO
-    }
 }
 ```
 
@@ -134,22 +99,6 @@ public class ExampleOriginPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         getCommand("yourcommand").setExecutor(new YourCommandExecutor());
-    }
-}
-
-class YourCommandExecutor implements CommandExecutor {
-
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("a")) {
-                //TODO a
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("b")) {
-                String param = args[1];
-                //TODO b
-            }
-        }
-        return false;
     }
 }
 
@@ -167,11 +116,6 @@ class YourFastCommandExecutor implements IFastCommandExecutor {
     @FastCommand(index = "a", desc = "your command a")
     public void onA(CommandSender sender) {
         //TODO A
-    }
-
-    @FastCommand(index = "b", desc = "your command b")
-    public void onB(CommandSender sender, String param) {
-        //TODO B
     }
 
     @Override
