@@ -11,14 +11,10 @@
 ![image](https://github.com/HyrKG/FastSpigot/blob/master/logo.png)
 
 这是一个帮助进行快速插件开发的控制反转(IoC)框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。该项目主要具有一下特性：
-
-This is a IoC framework which can helps you develop spigot plugin faster. I'll use ASM,annotation and reflection(I don't
-know how it calls) to help you develop faster and more succinctly.The project mainly has the following features:
-
-- 强调模块化开发，便于框架构建。Emphasize modular development, facilitate framework construction.
-- 方便解耦，简化开发。Easy to decouple, easy to develop.
-- 使用接口实现服务，易于调用。Interfaces provide service too.
-- 减少不必要的冗余代码。Reduce unnecessary redundant code.
+- 强调模块化开发，便于框架构建。
+- 方便解耦，简化开发。
+- 使用接口实现服务，易于调用。
+- 减少不必要的冗余代码。
 
 > ### 了解更多 / Learn More
 > __中文文档:__ https://fastspigot.doc.hyrkg.cn/
@@ -27,8 +23,6 @@ know how it calls) to help you develop faster and more succinctly.The project ma
 
 > 该项目主要为学习用途，很多专业知识并不具备，若有错误请指出！
 >
-> This project is mainly for learning purposes, it means I may make professional mistakes or description mistakes,
-> please point it out.
 
 # 主要特性 / Main Feature
 
@@ -36,22 +30,13 @@ know how it calls) to help you develop faster and more succinctly.The project ma
 
 该项目是针对spigot实现的一个轻型的控制反转(IoC)框架，主要通过@Inject注释来进行对模块/处理器的依赖注入，从而进行解耦并且易于框架搭建。 其中FastInnerCore为该框架的IoC容器。
 
-This project is a lightweight spigot IoC framework which mainly use @Inject to dependency inject and make your project
-decoupled and easy to frame.
-
 #### 依赖注入与动态注入 / Dependency Injection, Dynamic Injection
 
 该项目利用反射实现了对@Inject所注释类的依赖注入。 同时利用ASM进行动态注入，使该框架中接口同样实现了服务提供。
 
-This project uses reflection to implement dependency injection into the classes annotated by @Inject. At the same time,
-ASM is used for dynamic injection, so that the interface in the framework also realizes service provision.
-
 #### 接口不只是接口，同样可以提供服务 / Interface can also provide service
 
 在该框架中，接口已经脱离了接口的作用，而同样作为服务提供者，如以下为有效代码。
-
-In this framework, the interface not only a interface, but also as a service provider, such as the following is valid
-code.
 
 ```Java
 public class ExampleFastPlugin extends FastPlugin { 
