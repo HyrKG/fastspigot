@@ -10,11 +10,11 @@
 ![](https://bstats.org/signatures/bukkit/fastspigot.svg)
 ![image](https://github.com/HyrKG/FastSpigot/blob/master/logo.png)
 
-这是一个帮助进行快速插件开发的控制反转(IoC)框架。我将会使用ASM、注释和反射等方法，帮助你进行更加快速与简洁的开发。该项目主要具有一下特性：
-- 强调模块化开发，便于框架构建。
-- 方便解耦，简化开发。
-- 使用接口实现服务，易于调用。
-- 减少不必要的冗余代码。
+这是一个帮助进行快速插件开发的控制反转(IoC)框架。通过ASM、注释和反射等方法，帮助进行更加快速与简洁的开发。
+- 框架模块化。
+- 框架解耦。
+- 接口同样提供服务。
+- 减少冗余。
 
 > __中文文档:__ https://fastspigot.doc.hyrkg.cn/
 
@@ -29,14 +29,14 @@
 
 #### 依赖注入与动态注入 / Dependency Injection, Dynamic Injection
 
-该项目利用反射实现了对@Inject所注释类的依赖注入。 同时利用ASM进行动态注入，使该框架中接口同样实现了服务提供。
+该项目利用反射实现了对@Inject所注释类的依赖注入; 同时利用ASM进行动态注入，使该框架中接口同样实现了服务提供。
 
 #### 接口不只是接口，同样可以提供服务 / Interface can also provide service
 
-在该框架中，接口已经脱离了接口的作用，而同样作为服务提供者。
+在该框架中，接口同样可以作为服务的提供者。
 
 
-# 前后对比 / Before and After
+# 部分前后对比 / Before and After
 
 #### 管理器 Handler
 
