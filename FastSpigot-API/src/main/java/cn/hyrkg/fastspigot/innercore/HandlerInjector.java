@@ -17,8 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 /**
  * 该类对处理器声明的变量进行注入处理
- * */
-public class HandlerInjector {
+ * */ public class HandlerInjector {
     /**
      * Main inner core.
      */
@@ -27,8 +26,7 @@ public class HandlerInjector {
     @Getter
     /**
      * List of created handlers.
-     * */
-    private HashMap<Object, HandlerInfo> handlerInfoMap = new HashMap<>();
+     * */ private HashMap<Object, HandlerInfo> handlerInfoMap = new HashMap<>();
 
     /**
      * Injected class to handler info map.
@@ -39,8 +37,7 @@ public class HandlerInjector {
     @Getter
     /**
      * Time spent of handler create and inject.
-     * */
-    private HashMap<HandlerInfo, Long> handlerInjectCost = new HashMap<>();
+     * */ private HashMap<HandlerInfo, Long> handlerInjectCost = new HashMap<>();
 
     /**
      * Get handler info of injected handler object.
@@ -66,10 +63,8 @@ public class HandlerInjector {
 
                 if (field.getType().equals(rawClass)) {
                     field.setAccessible(true);
-                    if (Modifier.isStatic(field.getModifiers()))
-                        field.set(null, instance);
-                    else
-                        field.set(instance, instance);
+                    if (Modifier.isStatic(field.getModifiers())) field.set(null, instance);
+                    else field.set(instance, instance);
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -107,6 +102,22 @@ public class HandlerInjector {
 
                 Inject injectInfo = field.getAnnotation(Inject.class);
 
+                //检查是否需要前置，如果需要并且前置不存在，跳过
+                if (injectInfo.dependsOn().length > 0) {
+                    String requireds = "";
+                    boolean pass = true;
+                    for (String dependency : injectInfo.dependsOn()) {
+                        if (!innerCore.getCreator().checkDependency(dependency)) {
+                            requireds += dependency + ",";
+                            pass = false;
+                        }
+                    }
+                    if (!pass) {
+                        innerCore.getCreator().warm("skipped " + (injectInfo.name().isEmpty() ? field.getClass().getSimpleName() : injectInfo.name()) + " which required " + requireds.substring(0, requireds.length() - 1) + " as dependency!");
+                        continue;
+                    }
+                }
+
                 //create handler instance and inject to field value
                 //1.实例化变量类，并将值设置在变量上。
                 //#注意，ASM在这一步骤运作，是本框架核心。
@@ -118,8 +129,7 @@ public class HandlerInjector {
                 //2.生成该处理器的信息，并绑定到处理器/上级处理器上
                 HandlerInfo info = new HandlerInfo(injectInfo, innerCore, parentInfo, field.getType(), handler.getClass(), handler);
 //                handlerInfoHashMap.put(handler.getClass(), info);
-                if (parentInfo != null)
-                    parentInfo.addChildInfo(info);
+                if (parentInfo != null) parentInfo.addChildInfo(info);
                 handlerInfoMap.put(handler, info);
 
                 ReflectHelper.findAndInvokeMethodIsAnnotatedSupered(field.getType(), handler, OnHandlerPreInit.class);
@@ -156,8 +166,7 @@ public class HandlerInjector {
             loadInstance(childInfo);
         }
         long timeCost = System.currentTimeMillis() - timeBefore;
-        if (!handlerInjectCost.containsKey(sourceInfo))
-            handlerInjectCost.put(sourceInfo, 0l);
+        if (!handlerInjectCost.containsKey(sourceInfo)) handlerInjectCost.put(sourceInfo, 0l);
         handlerInjectCost.put(sourceInfo, handlerInjectCost.get(sourceInfo) + timeCost);
     }
 

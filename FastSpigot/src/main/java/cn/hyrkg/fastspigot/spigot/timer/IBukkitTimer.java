@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.service.timer;
+package cn.hyrkg.fastspigot.spigot.timer;
 
 import cn.hyrkg.fastspigot.innercore.annotation.ImplService;
 import cn.hyrkg.fastspigot.spigot.service.IPluginProvider;

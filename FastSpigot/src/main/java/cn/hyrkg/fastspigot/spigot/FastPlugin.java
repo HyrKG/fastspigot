@@ -5,6 +5,8 @@ import cn.hyrkg.fastspigot.innercore.ICoreCreator;
 import cn.hyrkg.fastspigot.innercore.annotation.Inject;
 import cn.hyrkg.fastspigot.innercore.framework.HandlerInfo;
 import cn.hyrkg.fastspigot.spigot.service.ILoggerService;
+import cn.hyrkg.fastspigot.spigotplugin.support.locker.MysqlLockerManager;
+import cn.hyrkg.fastspigot.spigotplugin.support.redis.RedisManager;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -40,6 +42,11 @@ public class FastPlugin extends JavaPlugin implements ICoreCreator, ILoggerServi
             @Override
             public String name() {
                 return getPluginName();
+            }
+
+            @Override
+            public String[] dependsOn() {
+                return new String[0];
             }
 
             @Override
@@ -108,5 +115,15 @@ public class FastPlugin extends JavaPlugin implements ICoreCreator, ILoggerServi
     @Override
     public boolean isDebugging(Class info) {
         return debugHandler.isDebugging(info);
+    }
+
+    @Override
+    public boolean checkDependency(String name) {
+        if (name.equalsIgnoreCase("fastspigot-redis")) {
+            return RedisManager.isEnable();
+        } else if (name.equalsIgnoreCase("fastspigot-locker")) {
+            return MysqlLockerManager.isEnabled();
+        }
+        return getServer().getPluginManager().getPlugin(name) != null;
     }
 }

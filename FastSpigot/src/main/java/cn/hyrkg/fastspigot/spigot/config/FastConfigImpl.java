@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.service.config;
+package cn.hyrkg.fastspigot.spigot.config;
 
 import cn.hyrkg.fastspigot.innercore.framework.HandlerInfo;
 import cn.hyrkg.fastspigot.innercore.framework.interfaces.IImplementation;

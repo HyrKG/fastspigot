@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.service.command;
+package cn.hyrkg.fastspigot.spigot.command;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;

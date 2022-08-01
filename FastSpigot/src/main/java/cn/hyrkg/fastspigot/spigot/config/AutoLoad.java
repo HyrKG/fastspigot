@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.service.config;
+package cn.hyrkg.fastspigot.spigot.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

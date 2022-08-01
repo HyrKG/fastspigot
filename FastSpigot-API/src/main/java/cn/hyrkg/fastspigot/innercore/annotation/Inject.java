@@ -13,5 +13,7 @@ import java.lang.annotation.Target;
 public @interface Inject {
     String name() default "";
 
+    String[] dependsOn() default {};
+
     int index() default 0;
 }
