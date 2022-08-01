@@ -7,6 +7,7 @@ import cn.hyrkg.fastspigot.spigotplugin.bstats.Metrics;
 import cn.hyrkg.fastspigot.spigotplugin.command.CommandFastSpigot;
 import cn.hyrkg.fastspigot.spigotplugin.support.concurrent.BukkitThreadExecutor;
 import cn.hyrkg.fastspigot.spigotplugin.support.locker.MysqlLockerManager;
+import cn.hyrkg.fastspigot.spigotplugin.support.redis.RedisManager;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginLoadOrder;
@@ -39,9 +40,12 @@ public class PluginFastSpigot extends JavaPlugin {
         FastJam.init(this);
         BukkitThreadExecutor.init(this);
         MysqlLockerManager.init(this);
+        RedisManager.init(this);
 
+        //metrics
         metrics = new Metrics(this, 11356);
 
+        //info
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] SUPPORT ENABLED!");
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] LEARN MORE ABOUT THIS FRAMEWORK IN GITHUB:");
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[FASTSPIGOT] (https://)github.com/HyrKG/FastSpigot");
