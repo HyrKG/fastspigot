@@ -14,21 +14,19 @@ public class FastRedisChannel {
     }
 
     public void subscribeAndBlocking(FastRedisSubscriber fastRedisPubSub) {
-        Jedis jedis = RedisManager.getNewJedis();
-        try {
+
+        try (Jedis jedis = RedisManager.getNewJedis()) {
             fastRedisPubSub.onPreSubscribe();
             jedis.subscribe(fastRedisPubSub, channelName);
         } catch (Exception e) {
             fastRedisPubSub.onUnsubscribeUnexpected(this, e);
-        } finally {
-            jedis.close();
         }
     }
 
     public void publish(JsonObject jsonObject) {
         jsonObject.addProperty("$server_port", RedisManager.getServerPort());
-        Jedis jedis = RedisManager.getJedis();
-        jedis.publish(channelName, jsonObject.toString());
-        jedis.close();
+        try (Jedis jedis = RedisManager.getJedis()) {
+            jedis.publish(channelName, jsonObject.toString());
+        }
     }
 }

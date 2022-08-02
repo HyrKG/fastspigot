@@ -1,10 +1,10 @@
 package cn.hyrkg.lockertest;
 
-import cn.hyrkg.fastspigot.spigotplugin.support.redis.FastRedisChannel;
-import cn.hyrkg.fastspigot.spigotplugin.support.redis.FastRedisSubscriber;
 import cn.hyrkg.fastspigot.spigotplugin.support.redis.RedisManager;
-import com.google.gson.JsonObject;
 import lombok.SneakyThrows;
+import redis.clients.jedis.Jedis;
+
+import java.util.UUID;
 
 public class LockerTest {
     @SneakyThrows
@@ -12,28 +12,20 @@ public class LockerTest {
         RedisManager.setHost("hyrkg.cn");
         RedisManager.setPassword("passwd123456");
 
-        FastRedisChannel channel = new FastRedisChannel("test");
-
-        FastRedisSubscriber subscriber1 = new FastRedisSubscriber() {
-            @Override
-            public void onMessage(FastRedisChannel channel, JsonObject jsonObject) {
-                System.out.println("msg1 to " + this + "> " + jsonObject);
+        try (Jedis jedis = RedisManager.getJedis()) {
+            long timeBefore = System.currentTimeMillis();
+            for (int i = 0; i < 8462; i++) {
+                if (i % 50 == 0) System.out.println("insert progress " + i);
+                jedis.lpush("saochatlist:dating", i + ">>" + UUID.randomUUID().toString());
             }
-        };
+            System.out.println("insert cost " + (System.currentTimeMillis() - timeBefore));
+        }
 
-        FastRedisSubscriber subscriber2 = new FastRedisSubscriber() {
-            @Override
-            public void onMessage(FastRedisChannel channel, JsonObject jsonObject) {
-                System.out.println("msg2 to " + this + "> " + jsonObject);
-            }
-        };
-
-        channel.subscribeAsync(subscriber1);
-        channel.subscribeAsync(subscriber2);
-
-        Thread.sleep(2000);
-        subscriber1.publishAll(new JsonObject());
-        subscriber2.publishAll(new JsonObject());
+        try (Jedis jedis = RedisManager.getJedis()) {
+            long timeBefore = System.currentTimeMillis();
+            jedis.lrange("saochatlist:dating", 0, -1);
+            System.out.println("get cost " + (System.currentTimeMillis() - timeBefore));
+        }
 
 
     }
