@@ -104,16 +104,18 @@ import java.util.List;
 
                 //检查是否需要前置，如果需要并且前置不存在，跳过
                 if (injectInfo.dependsOn().length > 0) {
-                    String requireds = "";
+                    int requiredCount = 0;
+                    String required = "";
                     boolean pass = true;
                     for (String dependency : injectInfo.dependsOn()) {
                         if (!innerCore.getCreator().checkDependency(dependency)) {
-                            requireds += dependency + ",";
+                            required += dependency + ",";
+                            requiredCount += 1;
                             pass = false;
                         }
                     }
                     if (!pass) {
-                        innerCore.getCreator().warm("skipped " + (injectInfo.name().isEmpty() ? field.getClass().getSimpleName() : injectInfo.name()) + " which required " + requireds.substring(0, requireds.length() - 1) + " as dependency!");
+                        innerCore.getCreator().warm("§c§lSKIPPED [" + (injectInfo.name().isEmpty() ? field.getType().getSimpleName() : injectInfo.name()) + "] WHICH REQUIRED [" + required.substring(0, required.length() - 1) + "] AS " + (requiredCount > 1 ? "DEPENDENCIES" : "DEPENDENCY") + "!");
                         continue;
                     }
                 }

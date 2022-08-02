@@ -2,8 +2,8 @@ package cn.hyrkg.fastspigot.spigot.command;
 
 import cn.hyrkg.fastspigot.innercore.framework.HandlerInfo;
 import cn.hyrkg.fastspigot.innercore.framework.interfaces.IImplementation;
-import cn.hyrkg.fastspigot.spigot.i18n.I18n;
 import cn.hyrkg.fastspigot.spigot.FastPlugin;
+import cn.hyrkg.fastspigot.spigot.i18n.I18n;
 import cn.hyrkg.fastspigot.spigot.utils.MsgHelper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

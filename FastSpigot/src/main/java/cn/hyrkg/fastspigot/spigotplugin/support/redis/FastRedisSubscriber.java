@@ -33,6 +33,10 @@ public abstract class FastRedisSubscriber extends JedisPubSub {
         bindingChannel.values().forEach(j -> this.publish(j, jsonObject));
     }
 
+    public void onPreSubscribe() {
+    }
+
+
     public void onPostSubscribe() {
     }
 

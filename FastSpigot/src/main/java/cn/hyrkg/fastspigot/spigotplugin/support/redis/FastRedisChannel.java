@@ -14,6 +14,7 @@ public class FastRedisChannel {
 
     public void subscribeAndBlocking(FastRedisSubscriber fastRedisPubSub) {
         try {
+            fastRedisPubSub.onPreSubscribe();
             RedisManager.getJedis().subscribe(fastRedisPubSub, channelName);
             fastRedisPubSub.onPostSubscribe();
         } catch (Exception e) {

@@ -13,6 +13,9 @@
                 <include>org.ow2.asm:asm</include>
                 <include>cn.hyrkg.fastspigot:fastspigot-api</include>
                 <include>cn.hyrkg.fastspigot:fastspigot-simplemysql</include>
+                <include>org.apache.commons:commons-pool2</include>
+                <include>redis.clients:jedis</include>
+                <include>org.slf4j:slf4j-api</include>
             </includes>
 
             <outputDirectory>/</outputDirectory>
