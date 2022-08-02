@@ -68,7 +68,7 @@ public class RedisManager {
         }
 
         if (enable) {
-            getJedis(); //test connection
+            getJedis().close(); //test connection
         }
     }
 
@@ -86,7 +86,6 @@ public class RedisManager {
     public static synchronized Jedis getJedis() {
         if (!isEnable())
             return null;
-
         if (jedisPool == null) {
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
             jedisPoolConfig.setMaxIdle(poolMaxSize);
@@ -94,8 +93,16 @@ public class RedisManager {
             jedisPoolConfig.setTestOnBorrow(true);
             jedisPool = new JedisPool(jedisPoolConfig, host, port, timeOutMS, password);
         }
-
         return jedisPool.getResource();
+    }
+
+    public static Jedis getNewJedis() {
+        if (!isEnable())
+            return null;
+        Jedis jedis = new Jedis(host, port);
+        if (!password.isEmpty())
+            jedis.auth(password);
+        return jedis;
     }
 
     public static boolean isEnable() {

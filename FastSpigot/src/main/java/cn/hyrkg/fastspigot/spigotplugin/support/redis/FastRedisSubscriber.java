@@ -14,12 +14,15 @@ public abstract class FastRedisSubscriber extends JedisPubSub {
     public static final String PROPERTY_KEY_UID = "$uid";
     public static final JsonParser parser = new JsonParser();
 
+
     protected UUID uuid = UUID.randomUUID();
 
     //是否自我忽略，不接收自己发出的包
     protected boolean selfNeglect = false;
     //重连时间
     protected long reconnectTime = 5000;
+
+    protected boolean subscribing = true;
 
     @Getter
     protected HashMap<String, FastRedisChannel> bindingChannel = new HashMap<>();
@@ -33,12 +36,17 @@ public abstract class FastRedisSubscriber extends JedisPubSub {
         bindingChannel.values().forEach(j -> this.publish(j, jsonObject));
     }
 
+    public void unsubscribeAll() {
+        this.subscribing = false;
+        bindingChannel.values().forEach(j -> {
+            this.unsubscribe(j.channelName);
+        });
+    }
+
+
     public void onPreSubscribe() {
     }
 
-
-    public void onPostSubscribe() {
-    }
 
     public abstract void onMessage(FastRedisChannel channel, JsonObject jsonObject);
 
@@ -67,8 +75,10 @@ public abstract class FastRedisSubscriber extends JedisPubSub {
 
     @SneakyThrows
     public synchronized void onUnsubscribeUnexpected(FastRedisChannel channel, Exception exception) {
-        Thread.sleep(reconnectTime);
-        //reconnect
-        channel.subscribeAndBlocking(this);
+        if (subscribing) {
+            Thread.sleep(reconnectTime);
+            //reconnect
+            channel.subscribeAndBlocking(this);
+        }
     }
 }
