@@ -1,7 +1,7 @@
-package cn.hyrkg.fastspigot.spigot.instances;
+package cn.hyrkg.fastspigot.spigot.service.config.instances;
 
 import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerInit;
-import cn.hyrkg.fastspigot.spigot.config.IFastYamlConfig;
+import cn.hyrkg.fastspigot.spigot.service.config.IFastYamlConfig;
 import cn.hyrkg.fastspigot.spigot.service.ILoggerService;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

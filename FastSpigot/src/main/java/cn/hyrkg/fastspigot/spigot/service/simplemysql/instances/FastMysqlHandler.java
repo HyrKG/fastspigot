@@ -1,9 +1,9 @@
 package cn.hyrkg.fastspigot.spigot.service.simplemysql.instances;
 
 import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerInit;
-import cn.hyrkg.fastspigot.spigot.config.AutoLoad;
-import cn.hyrkg.fastspigot.spigot.config.FastConfigImpl;
-import cn.hyrkg.fastspigot.spigot.config.IFastYamlConfig;
+import cn.hyrkg.fastspigot.spigot.service.config.AutoLoad;
+import cn.hyrkg.fastspigot.spigot.service.config.FastConfigImpl;
+import cn.hyrkg.fastspigot.spigot.service.config.IFastYamlConfig;
 import cn.hyrkg.fastspigot.spigot.service.ILoggerService;
 import cn.hyrkg.fastspigot.spigot.service.simplemysql.ISimpleMysql;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;

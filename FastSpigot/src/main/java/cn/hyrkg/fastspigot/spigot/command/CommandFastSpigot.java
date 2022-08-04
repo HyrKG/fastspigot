@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigotplugin.command;
+package cn.hyrkg.fastspigot.spigot.command;
 
 import cn.hyrkg.fastspigot.spigotplugin.PluginFastSpigot;
 import cn.hyrkg.fastspigot.spigotplugin.support.locker.ILock;

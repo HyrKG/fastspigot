@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.handler;
+package cn.hyrkg.fastspigot.spigot.temple.handler;
 
 import cn.hyrkg.fastspigot.innercore.annotation.events.OnHandlerDisable;
 import com.google.common.base.Preconditions;

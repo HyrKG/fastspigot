@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.config;
+package cn.hyrkg.fastspigot.spigot.service.config;
 
 public class ErrorAutoloadException extends RuntimeException {
     public final String errorMessage;

@@ -1,4 +1,4 @@
-package cn.hyrkg.fastspigot.spigot.command;
+package cn.hyrkg.fastspigot.spigot.service.command;
 
 import cn.hyrkg.fastspigot.innercore.annotation.ImplService;
 import cn.hyrkg.fastspigot.innercore.framework.interfaces.IServiceProvider;
