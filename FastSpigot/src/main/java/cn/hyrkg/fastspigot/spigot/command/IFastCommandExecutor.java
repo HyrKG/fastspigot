@@ -31,6 +31,18 @@ public interface IFastCommandExecutor extends IServiceProvider {
         return player;
     }
 
+    default <T> T checkNull(T object, String nullMsg) {
+        if (object == null)
+            throwError(nullMsg);
+        return object;
+    }
+
+    default <T> T checkNull(T object) {
+        if (object == null)
+            throwError(object.getClass().getSimpleName() + " 为空!");
+        return object;
+    }
+
     default void throwError(String error) {
         ((FastCommandImpl) getImplementation(IFastCommandExecutor.class)).throwError(null, error);
     }

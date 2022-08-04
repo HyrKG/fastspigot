@@ -21,7 +21,9 @@ import java.util.concurrent.Executors;
 public class RedisManager {
     private static File configFile;
     @Setter
-    private static String host = "localhost", password = "";
+    @Getter
+    private static String host = "localhost";
+    private static String password = "";
     @Setter
     private static int port = 6379, poolIdleSize = 10, poolMaxSize = 1000, timeOutMS = 5000;
     private static boolean enable = true;
