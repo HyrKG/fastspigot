@@ -23,6 +23,7 @@ public class RedisManager {
     @Setter
     @Getter
     private static String host = "localhost";
+    @Setter
     private static String password = "";
     @Setter
     private static int port = 6379, poolIdleSize = 10, poolMaxSize = 1000, timeOutMS = 5000;

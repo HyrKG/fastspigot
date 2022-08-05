@@ -75,6 +75,7 @@ public abstract class FastRedisSubscriber extends JedisPubSub {
 
     @SneakyThrows
     public synchronized void onUnsubscribeUnexpected(FastRedisChannel channel, Exception exception) {
+        exception.printStackTrace();
         if (subscribing) {
             Thread.sleep(reconnectTime);
             //reconnect
