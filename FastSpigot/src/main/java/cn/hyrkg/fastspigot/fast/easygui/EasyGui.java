@@ -20,7 +20,11 @@ public abstract class EasyGui {
     }
 
     public void createInventory(int size, String title) {
-        this.inv = Bukkit.createInventory(null, size, title);
+        Inventory created = createInventory();
+        if (created == null)
+            this.inv = Bukkit.createInventory(null, size, title);
+        else
+            this.inv = created;
     }
 
     public EasyGui(Player p) {

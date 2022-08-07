@@ -16,6 +16,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Getter
 public class RedisManager {
@@ -32,7 +33,6 @@ public class RedisManager {
     private static int serverPort;
 
     private static JedisPool jedisPool = null;
-    private static ExecutorService threadPool = null;
 
     public static void init(JavaPlugin plugin) {
         enable = false;
@@ -65,23 +65,11 @@ public class RedisManager {
             jedisPool = null;
         }
 
-        if (threadPool != null) {
-            threadPool.shutdown();
-            threadPool = null;
-        }
-
         if (enable) {
             getJedis().close(); //test connection
         }
     }
 
-
-    public static ExecutorService getThreadPool() {
-        if (threadPool == null) {
-            threadPool = Executors.newCachedThreadPool();
-        }
-        return threadPool;
-    }
 
     /**
      * Get a jedis connection from lazy-load pool

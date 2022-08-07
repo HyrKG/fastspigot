@@ -10,7 +10,12 @@ public class FastRedisChannel {
 
     public void subscribeAsync(FastRedisSubscriber fastRedisPubSub) {
         fastRedisPubSub.getBindingChannel().put(channelName, this);
-        RedisManager.getThreadPool().submit(() -> subscribeAndBlocking(fastRedisPubSub));
+        new Thread() {
+            @Override
+            public void run() {
+                subscribeAndBlocking(fastRedisPubSub);
+            }
+        }.start();
     }
 
     public void subscribeAndBlocking(FastRedisSubscriber fastRedisPubSub) {

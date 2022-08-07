@@ -12,8 +12,12 @@ public class LockerTest {
         RedisManager.setHost("hyrkg.cn");
         RedisManager.setPassword("passwd123456");
 
-        long result = RedisManager.getJedis().llen("saochatlist:dating");
-        System.out.println(result);
+        try(Jedis jedis=RedisManager.getJedis())
+        {
+            System.out.println(jedis.get("tdwa"));
+        }
+
+//        long result = RedisManager.getJedis().llen("saochatlist:dating");
 
 //        try (Jedis jedis = RedisManager.getJedis()) {
 //            long timeBefore = System.currentTimeMillis();
