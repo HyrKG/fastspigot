@@ -10,51 +10,26 @@
 ![](https://bstats.org/signatures/bukkit/fastspigot.svg)
 ![image](https://github.com/HyrKG/FastSpigot/blob/master/logo.png)
 
-这是一个帮助进行快速插件开发的控制反转(IoC)框架。通过ASM、注释和反射等方法，帮助进行更加快速与简洁的开发。
-- 框架模块化。
-- 框架解耦。
-- 接口同样提供服务。
-- 减少冗余。
+FastSpigot是一个帮助进行快速插件开发的IoC/AoP框架。基于@Inject注释所展开的快捷开发系统。
 
-> __中文文档:__ https://fastspigot.doc.hyrkg.cn/
+### 目前提供服务 Provided Services
+- 快捷指令服务
+- 快捷配置服务
+- 快捷箱子界面（OOP）
+- 快捷的Forge界面基于信道的对接（OOP）
+- 简易的基于Mysql的锁
+- 内置Redis和Mysql
+- 各种各样的工具
+
 
 > 该项目主要为学习用途，很多专业知识并不具备，若有错误请指出！
 >
 
-# 主要特性 / Main Feature
+# 部分功能使用举例 / Before and After
 
-#### 控制反转(IoC)特性 / IoC feature
-
-该项目是针对spigot实现的一个轻型的控制反转(IoC)框架，主要通过@Inject注释来进行对模块/处理器的依赖注入，从而进行解耦并且易于框架搭建。 其中FastInnerCore为该框架的IoC容器。
-
-#### 依赖注入与动态注入 / Dependency Injection, Dynamic Injection
-
-该项目利用反射实现了对@Inject所注释类的依赖注入; 同时利用ASM进行动态注入，使该框架中接口同样实现了服务提供。
-
-#### 接口不只是接口，同样可以提供服务 / Interface can also provide service
-
-在该框架中，接口同样可以作为服务的提供者。
-
-
-# 部分前后对比 / Before and After
-
-#### 管理器 Handler
+#### 嵌套管理器注入 Inject Handler
 
 ```Java
-//使用前 Before
-public class ExampleOriginPlugin extends JavaPlugin {
-
-    public YourHandler yourHandler;
-
-    @Override
-    public void onEnable() {
-        yourHandler = new YourHandler();
-        yourHandler.onInit();
-    }
-}
-//##################################################################
-
-//使用后 After
 public class ExampleFastPlugin extends FastPlugin {
 
     @Inject
@@ -63,64 +38,44 @@ public class ExampleFastPlugin extends FastPlugin {
 
 class YourHandler{
 
-    /**
-    * 在此进行初始化
-    **/
+    @Inject 
+    public OtherHandler otherHandler;
+    
     @OnHandlerInit
-    void onInit();
+    void onInit(){}
+    
+    @OnHandlerLoad
+    void onLoad() {}
+    }
+    
+.....and so on
 }
 ```
 
-#### 注册事件 Register Event
-
+#### LOG服务使用 Easy Log
 ```Java
-//使用前 Before
-public class ExampleOriginPlugin extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(new YourEventHandler(), this);
+public class YourHandler implements ILogService {
+    
+    @OnHandlerLoad
+    public void onLoad() {
+        info("该处理器已被加载!");
     }
-}
-
-//##################################################################
-
-//使用后 After
-public class ExampleFastPlugin extends FastPlugin {
-    @Inject
-    public YourEventHandler yourEventHandler;
 }
 ```
 
-#### 指令 Command
-
+#### 指令服务使用 Easy Command
 ```Java
-//使用前 Before
-public class ExampleOriginPlugin extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        getCommand("yourcommand").setExecutor(new YourCommandExecutor());
+public class YourCommandHandler implements IFastCommandExecutor {
+    @FastCommand(index = "test", desc = "测试指令")
+    public void onTest(Player player, int number) {
+        player.sendMessage("你输入了 " + number);
     }
 }
-
-//##################################################################
-
-//使用后 After
-public class ExampleFastPlugin extends FastPlugin {
-
-    @Inject
-    public YourFastCommandExecutor yourFastCommandExecutor;
-}
-
-class YourFastCommandExecutor implements IFastCommandExecutor {
-
-    @FastCommand(index = "a", desc = "your command a")
-    public void onA(CommandSender sender) {
-        //TODO A
-    }
-
-    @Override
-    public String[] getCommands() {
-        return new String[]{"yourcommand"};
-    }
+```
+#### 快捷配置读取 Easy Config
+```Java
+public class YourCommandHandler  extends FastPluginConfig {
+    @AutoLoad
+    public static boolean you_want_to_load;
 }
 ```
