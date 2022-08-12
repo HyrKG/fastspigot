@@ -3,8 +3,8 @@ package cn.hyrkg.fastspigot.spigotplugin;
 
 import cn.hyrkg.fastspigot.fast.actionjam.FastJam;
 import cn.hyrkg.fastspigot.fast.easygui.EasyGuiHandler;
-import cn.hyrkg.fastspigot.spigotplugin.bstats.Metrics;
 import cn.hyrkg.fastspigot.spigot.command.CommandFastSpigot;
+import cn.hyrkg.fastspigot.spigotplugin.bstats.Metrics;
 import cn.hyrkg.fastspigot.spigotplugin.support.concurrent.BukkitThreadExecutor;
 import cn.hyrkg.fastspigot.spigotplugin.support.locker.MysqlLockerManager;
 import cn.hyrkg.fastspigot.spigotplugin.support.redis.RedisManager;

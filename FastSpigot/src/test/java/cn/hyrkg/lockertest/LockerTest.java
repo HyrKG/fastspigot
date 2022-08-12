@@ -4,8 +4,6 @@ import cn.hyrkg.fastspigot.spigotplugin.support.redis.RedisManager;
 import lombok.SneakyThrows;
 import redis.clients.jedis.Jedis;
 
-import java.util.UUID;
-
 public class LockerTest {
     @SneakyThrows
     public static void main(String[] args) {
