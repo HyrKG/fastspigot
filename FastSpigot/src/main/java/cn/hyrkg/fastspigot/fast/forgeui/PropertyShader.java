@@ -2,10 +2,14 @@ package cn.hyrkg.fastspigot.fast.forgeui;
 
 import com.google.gson.JsonArray;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class PropertyShader {
     public final SharedProperty property;
+
+    protected HashMap<String, List<? extends PropertyShader>> arrayCacheMap = new HashMap<>();
 
     public PropertyShader(SharedProperty property) {
         this.property = property;
@@ -15,6 +19,18 @@ public class PropertyShader {
         return property;
     }
 
+
+    public void clearCaches() {
+        arrayCacheMap.clear();
+    }
+
+
+    public <T extends PropertyShader> List<T> getCachedPropertyArray(String key, Class<T> type) {
+        if (!arrayCacheMap.containsKey(key)) {
+            arrayCacheMap.put(key, getProperty().getArray(key, type));
+        }
+        return (List<T>) arrayCacheMap.get(key);
+    }
 
     public JsonContent<String> cStr(String key) {
         return new JsonContent<String>(property, key, String.class);

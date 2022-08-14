@@ -260,6 +260,15 @@ public class SharedProperty {
         return list;
     }
 
+
+    public void setArray(String key, List<? extends PropertyShader> list) {
+        this.setProperty(key, getArrayFromList(list));
+    }
+
+    public <T extends PropertyShader> List<T> getArray(String key, Class<T> clazz) {
+        return getListFromArray(key, clazz);
+    }
+
     /**
      * ####################################################################
      * Decorate Feature
