@@ -52,21 +52,23 @@ public class JsonContent<T> {
             return (T) getFloat();
         else if (tClass.equals(Long.class))
             return (T) getLong();
-        else if (tClass.equals(JsonArray.class))
+        else if (tClass.equals(Boolean.class))
+            return (T) getBoolean();
+        if (tClass.equals(JsonArray.class))
             return (T) getJsonArray();
         else if (tClass.equals(UUID.class)) {
             return ((T) UUID.fromString(getString()));
         } else if (tClass.isAssignableFrom(PropertyShader.class)) {
             SharedProperty theProperty = property.getAsProperty(key);
-            if (theProperty == null)
-                return null;
-            try {
-                return (T) shaderConstructor.newInstance(theProperty);
-            } catch (Exception e) {
-                return null;
+            if (theProperty != null) {
+                try {
+                    return (T) shaderConstructor.newInstance(theProperty);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return (T) null;
+        return (T) getString();
     }
 
     public String getString() {
@@ -94,6 +96,10 @@ public class JsonContent<T> {
 
     public Long getLong() {
         return property.getAsLong(key);
+    }
+
+    public Boolean getBoolean() {
+        return property.getAsBool(key);
     }
 
     public JsonArray getJsonArray() {

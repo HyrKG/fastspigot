@@ -41,7 +41,12 @@ public class PropertyShader {
     }
 
     public JsonContent<Integer> cInt(String key) {
-        return new JsonContent<Integer>(property, key,Integer.class);
+        return new JsonContent<Integer>(property, key, Integer.class);
     }
+
+    public JsonContent<Boolean> cBool(String key) {
+        return new JsonContent<Boolean>(property, key, Boolean.class);
+    }
+
 
 }
