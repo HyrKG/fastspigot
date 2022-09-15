@@ -18,6 +18,8 @@ public class BaseForgeGui {
     @Getter
     private UUID uuid = UUID.randomUUID();
 
+    protected boolean isDisplayed = false;
+
     @Getter
     private SharedProperty sharedProperty = new SharedProperty();
 
@@ -33,6 +35,10 @@ public class BaseForgeGui {
 
     }
 
+    public void markDisplayed() {
+        isDisplayed = true;
+    }
+
     public final void display() {
         guiHandler.display(this);
     }
@@ -42,6 +48,8 @@ public class BaseForgeGui {
     }
 
     public void forceSynProperty() {
+        if (!isDisplayed)
+            return;
         if (this.getSharedProperty().detectChange()) {
             guiHandler.updateChanges(this);
         }

@@ -89,6 +89,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         displayPacket.add("property", baseForgeGui.getSharedProperty().generateAndClearUpdate());
         forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), displayPacket.toString());
         viewingForgeGui.put(baseForgeGui.getViewer(), baseForgeGui);
+        baseForgeGui.markDisplayed();
     }
 
     /**
