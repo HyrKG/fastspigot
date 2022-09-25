@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class BaseForgeGui {
+public class BaseForgeGui implements IForgeGui {
     @Getter
     private final Player viewer;
     @Getter

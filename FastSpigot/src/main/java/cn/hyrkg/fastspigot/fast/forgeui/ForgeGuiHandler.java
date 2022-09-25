@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public static final String CHANNEL_FORGE_GUI = "ffg";
 
-    private ConcurrentHashMap<Player, BaseForgeGui> viewingForgeGui = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Player, IForgeGui> viewingForgeGui = new ConcurrentHashMap<>();
 
 
     public SimpleModNetwork forgeGuiNetwork;
@@ -45,7 +45,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     /**
      * 向客户端发送消息
      */
-    public void sendMessage(SimpleMsg msg, BaseForgeGui baseForgeGui) {
+    public void sendMessage(SimpleMsg msg, IForgeGui baseForgeGui) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", baseForgeGui.getUuid().toString());
         jsonObject.add("msg", msg.getJsonObj());
@@ -67,7 +67,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     /**
      * 通知客户端更新界面
      */
-    public void updateChanges(BaseForgeGui baseForgeGui) {
+    public void updateChanges(IForgeGui baseForgeGui) {
         JsonObject changes = new JsonObject();
         changes.add("update", baseForgeGui.getSharedProperty().generateAndClearUpdate());
         changes.addProperty("uuid", baseForgeGui.getUuid().toString());
@@ -78,7 +78,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     /**
      * 通知客户端展示界面
      */
-    public void display(BaseForgeGui baseForgeGui) {
+    public void display(IForgeGui baseForgeGui) {
         if (isPlayerViewing(baseForgeGui.getViewer())) {
             removePlayer(baseForgeGui.getViewer());
         }
@@ -116,7 +116,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         if (jsonObject.has("uuid")) {
             String uid = jsonObject.get("uuid").getAsString();
             if (viewingForgeGui.containsKey(player)) {
-                BaseForgeGui baseForgeGui = viewingForgeGui.get(player);
+                IForgeGui baseForgeGui = viewingForgeGui.get(player);
                 if (baseForgeGui.getUuid().toString().equalsIgnoreCase(uid)) {
                     if (jsonObject.has("close")) {
                         removePlayer(player);
@@ -145,7 +145,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         return viewingForgeGui.containsKey(player);
     }
 
-    public BaseForgeGui getPlayerViewing(Player player) {
+    public IForgeGui getPlayerViewing(Player player) {
         return viewingForgeGui.get(player);
     }
 }
