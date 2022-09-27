@@ -120,6 +120,9 @@ public class SharedProperty {
                 propertyHashMap.put(key, (SharedProperty) value);
                 ((SharedProperty) value).changedJson = ((SharedProperty) value).completeJson;
                 completeJson.add(key, ((SharedProperty) value).getCompleteJson());
+            } else if (value instanceof PropertyShader) {
+                //remap
+                setProperty(key, ((PropertyShader) value).getProperty());
             } else if (value instanceof JsonObject) {
                 SharedProperty sharedProperty = new SharedProperty();
                 sharedProperty.completeJson = (JsonObject) value;
