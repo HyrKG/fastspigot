@@ -32,7 +32,6 @@ public class FastCommandImpl implements IImplementation<IFastCommandExecutor>, C
         this.executorInterface = executor;
 
 
-
         if (handlerInfo.innerCore.getCreator() instanceof FastPlugin) {
             FastPlugin plugin = (FastPlugin) handlerInfo.innerCore.getCreator();
 
@@ -103,11 +102,13 @@ public class FastCommandImpl implements IImplementation<IFastCommandExecutor>, C
             //TODO return as error msg
             genHelpInfo(executorInterface.isOp(commandSender)).forEach(j -> commandSender.sendMessage(j));
             MsgHelper.to(commandSender).warm("你输入的指令有误!请检查指令!");
-        } catch (ErrorCommand errorCommand) {
-            MsgHelper.to(commandSender).warm("执行指令错误: " + errorCommand.getErrorMsg());
         } catch (Exception e) {
-            executorInterface.handleException(e);
-            MsgHelper.to(commandSender).warm("发生了错误: " + e.getMessage());
+            if (e instanceof ErrorCommand) {
+                MsgHelper.to(commandSender).warm("执行指令错误: " + ((ErrorCommand) e).getErrorMsg());
+            } else {
+                executorInterface.handleException(e);
+                MsgHelper.to(commandSender).warm("发生了错误: " + e.getMessage());
+            }
         }
         return false;
     }

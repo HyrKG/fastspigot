@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class CommandMethod {
     }
 
 
-    public void handleCommandMethod(Object instance, CommandSender commandSender, String[] args) {
+    public void handleCommandMethod(Object instance, CommandSender commandSender, String[] args) throws IllegalAccessException {
         ArrayList<Object> argObjList = new ArrayList<>();
 
         if (senderClazz.equals(Player.class) && !(commandSender instanceof Player))
@@ -84,12 +85,12 @@ public class CommandMethod {
             index += 1;
         }
 
-
         try {
             loadedMethod.invoke(instance, argObjList.toArray(new Object[argObjList.size()]));
-        } catch (Exception e) {
-            executor.getExecutorInterface().handleException(e);
-            executor.throwError(e, "error when invoke command method!");
+        } catch (InvocationTargetException exception) {
+            if (exception.getCause() instanceof ErrorCommand) {
+                throw (ErrorCommand) exception.getCause();
+            }
         }
     }
 
