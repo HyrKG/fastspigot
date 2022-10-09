@@ -134,7 +134,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         removePlayer(event.getPlayer());
     }
 
-    private void removePlayer(Player player) {
+    public void removePlayer(Player player) {
         if (isPlayerViewing(player)) {
             viewingForgeGui.get(player).onClose();
             viewingForgeGui.remove(player);
