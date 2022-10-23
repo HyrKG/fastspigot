@@ -27,11 +27,9 @@ public class CommandMethod {
     public CommandMethod readMethod(Method method) {
         this.loadedMethod = method;
 
-        if (method.getParameterCount() == 0)
-            return null;
+        if (method.getParameterCount() == 0) return null;
 
-        if (!isValidSenderClass(method.getParameterTypes()[0]))
-            return null;
+        if (!isValidSenderClass(method.getParameterTypes()[0])) return null;
 
         senderClazz = method.getParameterTypes()[0];
 
@@ -47,10 +45,8 @@ public class CommandMethod {
         Preconditions.checkNotNull(commandSender);
         Preconditions.checkNotNull(args);
 
-        if (endClazz != null && endClazz.equals(String[].class))
-            return args.length >= parameters.size();
-        else
-            return args.length == parameters.size();
+        if (endClazz != null && endClazz.equals(String[].class)) return args.length >= parameters.size();
+        else return args.length == parameters.size();
     }
 
 
@@ -90,6 +86,8 @@ public class CommandMethod {
         } catch (InvocationTargetException exception) {
             if (exception.getCause() instanceof ErrorCommand) {
                 throw (ErrorCommand) exception.getCause();
+            } else {
+                exception.printStackTrace();
             }
         }
     }
