@@ -6,6 +6,8 @@ import cn.hyrkg.fastspigot.spigot.utils.MsgHelper;
 import cn.hyrkg.fastspigot.spigotplugin.PluginFastSpigot;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -62,8 +64,15 @@ public class RedisManager {
             jedisPool = null;
         }
 
+
         if (enable) {
-            getJedis().close(); //test connection
+            try {
+                getJedis().close(); //test connection
+            } catch (Exception e) {
+                e.printStackTrace();
+                enable = false;
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "ERROR WHEN TEST REDIS SERVER!");
+            }
         }
     }
 
@@ -79,7 +88,10 @@ public class RedisManager {
             jedisPoolConfig.setMaxIdle(poolMaxSize);
             jedisPoolConfig.setMaxIdle(poolIdleSize);
             jedisPoolConfig.setTestOnBorrow(true);
-            jedisPool = new JedisPool(jedisPoolConfig, host, port, timeOutMS, password);
+            if (!password.isEmpty())
+                jedisPool = new JedisPool(jedisPoolConfig, host, port, timeOutMS, password);
+            else
+                jedisPool = new JedisPool(jedisPoolConfig, host, port, timeOutMS);
         }
         return jedisPool.getResource();
     }
