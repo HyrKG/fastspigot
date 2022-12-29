@@ -13,12 +13,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public static final String CHANNEL_FORGE_GUI = "ffg";
 
-    private ConcurrentHashMap<Player, IForgeGui> viewingForgeGui = new ConcurrentHashMap<>();
+    private HashMap<Player, IForgeGui> viewingForgeGui = new HashMap<>();
+
 
     public SimpleModNetwork forgeGuiNetwork;
 
@@ -60,12 +62,12 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
      * 对所有使用中的界面探测更新
      */
     private void update() {
-        viewingForgeGui.values().forEach(j -> {
-            j.onUpdate();
-            if (j.getSharedProperty().detectChange()) {
-                updateChanges(j);
+        for (IForgeGui gui : new HashSet<>(viewingForgeGui.values())) {
+            gui.onUpdate();
+            if (gui.getSharedProperty().detectChange()) {
+                updateChanges(gui);
             }
-        });
+        }
     }
 
     /**

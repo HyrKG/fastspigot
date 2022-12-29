@@ -43,6 +43,7 @@ public abstract class BaseForgeShareGui implements IForgeGui {
     }
 
     public final void display(Player player) {
+        viewerSets.add(player);
         guiHandler.display(player, this);
     }
 
