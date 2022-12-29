@@ -2,6 +2,7 @@ package cn.hyrkg.fastspigot.fast.forgeui;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public abstract class BaseForgeShareGui implements IForgeGui {
     @Getter
     protected final ForgeGuiHandler guiHandler;
 
+    @Setter
     protected HashSet<Player> viewerSets = new HashSet<>();
 
     protected boolean isDisplayed = false;
@@ -32,6 +34,30 @@ public abstract class BaseForgeShareGui implements IForgeGui {
     public void addViewer(Player player) {
         viewerSets.add(player);
     }
+
+    public void removeViewer(Player player) {
+        viewerSets.remove(player);
+    }
+
+    public void setViewers(HashSet<Player> newViewers, boolean displayToNew) {
+
+        for (Player oldViewer : new HashSet<>(newViewers)) {
+            close(oldViewer);
+        }
+
+        if (displayToNew) {
+            HashSet<Player> diffViewers = new HashSet<>(newViewers);
+            diffViewers.removeAll(viewerSets);
+
+            viewerSets = newViewers;
+            for (Player diffViewer : diffViewers) {
+                display(diffViewer);
+            }
+        } else {
+            viewerSets = newViewers;
+        }
+    }
+
 
     @Override
     public void onUpdate() {
