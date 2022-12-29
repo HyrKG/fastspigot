@@ -61,6 +61,12 @@ public class SharedProperty {
         return updated;
     }
 
+    public JsonObject generateCompleteJsonAndClearUpdate() {
+        changedJson = new JsonObject();
+        removes.clear();
+        return getCompleteJson();
+    }
+
     public void synProperty(JsonObject jsonObject) {
 
         // syn json to now properties.

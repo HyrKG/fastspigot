@@ -81,44 +81,71 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     }
 
 
+    public JsonObject generateDisplayPacket(IForgeGui baseForgeGui) {
+        JsonObject displayPacket = new JsonObject();
+        displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
+        displayPacket.addProperty("gui", baseForgeGui.getGuiShortName());
+        displayPacket.add("property", baseForgeGui.getSharedProperty().generateCompleteJsonAndClearUpdate());
+        return displayPacket;
+    }
+
     /**
      * 通知客户端展示界面
      */
     public void display(IForgeGui baseForgeGui) {
-        JsonObject displayPacket = new JsonObject();
-        displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
-        displayPacket.addProperty("gui", baseForgeGui.getGuiShortName());
-        displayPacket.add("property", baseForgeGui.getSharedProperty().generateAndClearUpdate());
+        JsonObject packet = generateDisplayPacket(baseForgeGui);
+        for (Player viewer : baseForgeGui.getViewers()) {
+            display(viewer, baseForgeGui, packet);
+        }
+    }
 
+    public void display(Player player, IForgeGui baseForgeGui) {
+        JsonObject packet = generateDisplayPacket(baseForgeGui);
+        display(player, baseForgeGui, packet);
+    }
+
+    public void display(Player player, IForgeGui baseForgeGui, JsonObject packet) {
         for (Player viewer : baseForgeGui.getViewers()) {
             if (isPlayerViewing(viewer)) {
                 removePlayer(viewer);
             }
-            forgeGuiNetwork.sendPluginMessage(viewer, displayPacket.toString());
+            forgeGuiNetwork.sendPluginMessage(viewer, packet.toString());
             viewingForgeGui.put(viewer, baseForgeGui);
-            baseForgeGui.markDisplayed();
         }
+        baseForgeGui.markDisplayed();
+    }
+
+    public JsonObject generateClosePacket(IForgeGui baseForgeGui) {
+        JsonObject displayPacket = new JsonObject();
+        displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
+        displayPacket.addProperty("close", 0);
+        return displayPacket;
     }
 
     /**
      * 通知客户端关闭界面
      */
     public void close(IForgeGui baseForgeGui) {
-        JsonObject displayPacket = new JsonObject();
-        displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
-        displayPacket.addProperty("close", 0);
-        forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), displayPacket.toString());
-
+        JsonObject packet = generateClosePacket(baseForgeGui);
         for (Player viewer : baseForgeGui.getViewers()) {
-            if (!isPlayerViewing(viewer)) {
-                continue;
-            }
-            if (!getPlayerViewing(viewer).getUuid().equals(baseForgeGui.getUuid())) {
-                continue;
-            }
-            removePlayer(viewer);
+            close(viewer, baseForgeGui, packet);
         }
+    }
 
+    public void close(Player player, IForgeGui baseForgeGui) {
+        JsonObject packet = generateClosePacket(baseForgeGui);
+        close(player, baseForgeGui, packet);
+    }
+
+    public void close(Player player, IForgeGui baseForgeGui, JsonObject packet) {
+        forgeGuiNetwork.sendPluginMessage(player, packet.toString());
+        if (!isPlayerViewing(player)) {
+            return;
+        }
+        if (!getPlayerViewing(player).getUuid().equals(baseForgeGui.getUuid())) {
+            return;
+        }
+        removePlayer(player);
     }
 
     @SneakyThrows

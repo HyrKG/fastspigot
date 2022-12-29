@@ -42,9 +42,16 @@ public abstract class BaseForgeShareGui implements IForgeGui {
         guiHandler.display(this);
     }
 
+    public final void display(Player player) {
+        guiHandler.display(player, this);
+    }
 
     public final void close() {
         guiHandler.close(this);
+    }
+
+    public final void close(Player player) {
+        guiHandler.close(player, this);
     }
 
     @Override
