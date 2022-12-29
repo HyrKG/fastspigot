@@ -3,6 +3,7 @@ package cn.hyrkg.fastspigot.fast.forgeui;
 import cn.hyrkg.fastspigot.fast.forgenet.SimpleModNetwork;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.netty.util.internal.ConcurrentSet;
 import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,13 +15,12 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public static final String CHANNEL_FORGE_GUI = "ffg";
 
     private HashMap<Player, IForgeGui> viewingForgeGui = new HashMap<>();
-
+    private ConcurrentSet<IForgeGui> guiSet = new ConcurrentSet<>();
 
     public SimpleModNetwork forgeGuiNetwork;
 
@@ -62,7 +62,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
      * 对所有使用中的界面探测更新
      */
     private void update() {
-        for (IForgeGui gui : new HashSet<>(viewingForgeGui.values())) {
+        for (IForgeGui gui : guiSet) {
             gui.onUpdate();
             if (gui.getSharedProperty().detectChange()) {
                 updateChanges(gui);
@@ -114,6 +114,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
             forgeGuiNetwork.sendPluginMessage(viewer, packet.toString());
             viewingForgeGui.put(viewer, baseForgeGui);
         }
+        guiSet.add(baseForgeGui);
         baseForgeGui.markDisplayed();
     }
 
@@ -187,6 +188,10 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
             IForgeGui gui = viewingForgeGui.get(player);
             gui.onClose(player);
             viewingForgeGui.remove(player);
+            if (!viewingForgeGui.containsValue(gui)) {
+                guiSet.remove(gui);
+            }
+
         }
     }
 
