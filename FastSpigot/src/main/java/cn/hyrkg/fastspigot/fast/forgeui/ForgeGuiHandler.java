@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +19,6 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public static final String CHANNEL_FORGE_GUI = "ffg";
 
     private ConcurrentHashMap<Player, IForgeGui> viewingForgeGui = new ConcurrentHashMap<>();
-
 
     public SimpleModNetwork forgeGuiNetwork;
 
@@ -49,7 +49,11 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", baseForgeGui.getUuid().toString());
         jsonObject.add("msg", msg.getJsonObj());
-        forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), jsonObject.toString());
+
+        for (Player viewer : baseForgeGui.getViewers()) {
+            forgeGuiNetwork.sendPluginMessage(viewer, jsonObject.toString());
+
+        }
     }
 
     /**
@@ -71,7 +75,9 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         JsonObject changes = new JsonObject();
         changes.add("update", baseForgeGui.getSharedProperty().generateAndClearUpdate());
         changes.addProperty("uuid", baseForgeGui.getUuid().toString());
-        forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), changes.toString());
+        for (Player viewer : baseForgeGui.getViewers()) {
+            forgeGuiNetwork.sendPluginMessage(viewer, changes.toString());
+        }
     }
 
 
@@ -79,31 +85,38 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
      * 通知客户端展示界面
      */
     public void display(IForgeGui baseForgeGui) {
-        if (isPlayerViewing(baseForgeGui.getViewer())) {
-            removePlayer(baseForgeGui.getViewer());
-        }
-
         JsonObject displayPacket = new JsonObject();
         displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
         displayPacket.addProperty("gui", baseForgeGui.getGuiShortName());
         displayPacket.add("property", baseForgeGui.getSharedProperty().generateAndClearUpdate());
-        forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), displayPacket.toString());
-        viewingForgeGui.put(baseForgeGui.getViewer(), baseForgeGui);
-        baseForgeGui.markDisplayed();
+
+        for (Player viewer : baseForgeGui.getViewers()) {
+            if (isPlayerViewing(viewer)) {
+                removePlayer(viewer);
+            }
+            forgeGuiNetwork.sendPluginMessage(viewer, displayPacket.toString());
+            viewingForgeGui.put(viewer, baseForgeGui);
+            baseForgeGui.markDisplayed();
+        }
     }
 
     /**
      * 通知客户端关闭界面
      */
     public void close(BaseForgeGui baseForgeGui) {
-        if (isPlayerViewing(baseForgeGui.getViewer())) {
-            if (getPlayerViewing(baseForgeGui.getViewer()).getUuid().equals(baseForgeGui.getUuid())) {
-                JsonObject displayPacket = new JsonObject();
-                displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
-                displayPacket.addProperty("close", 0);
-                forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), displayPacket.toString());
-                removePlayer(baseForgeGui.getViewer());
+        JsonObject displayPacket = new JsonObject();
+        displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
+        displayPacket.addProperty("close", 0);
+        forgeGuiNetwork.sendPluginMessage(baseForgeGui.getViewer(), displayPacket.toString());
+
+        for (Player viewer : baseForgeGui.getViewers()) {
+            if (!isPlayerViewing(viewer)) {
+                continue;
             }
+            if (!getPlayerViewing(viewer).getUuid().equals(baseForgeGui.getUuid())) {
+                continue;
+            }
+            removePlayer(viewer);
         }
 
     }
@@ -113,30 +126,37 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public void onPluginMessageReceived(String s, Player player, byte[] bytes) {
         String str = new String(bytes, "UTF-8").substring(1);
         JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
-        if (jsonObject.has("uuid")) {
-            String uid = jsonObject.get("uuid").getAsString();
-            if (viewingForgeGui.containsKey(player)) {
-                IForgeGui baseForgeGui = viewingForgeGui.get(player);
-                if (baseForgeGui.getUuid().toString().equalsIgnoreCase(uid)) {
-                    if (jsonObject.has("close")) {
-                        removePlayer(player);
-                    } else if (jsonObject.has("msg")) {
-                        baseForgeGui.onMessage(jsonObject.getAsJsonObject("msg"));
-                    }
-                }
+        if (!jsonObject.has("uuid")) {
+            return;
+        }
+        String uid = jsonObject.get("uuid").getAsString();
 
-            }
+        if (!isPlayerViewing(player)) {
+            return;
+        }
+
+        IForgeGui baseForgeGui = getPlayerViewing(player);
+
+        if (!baseForgeGui.getUuid().toString().equalsIgnoreCase(uid)) {
+            return;
+        }
+
+        if (jsonObject.has("msg")) {
+            baseForgeGui.onMessage(player, jsonObject.getAsJsonObject("msg"));
+        } else if (jsonObject.has("close")) {
+            removePlayer(player);
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         removePlayer(event.getPlayer());
     }
 
     public void removePlayer(Player player) {
         if (isPlayerViewing(player)) {
-            viewingForgeGui.get(player).onClose();
+            IForgeGui gui = viewingForgeGui.get(player);
+            gui.onClose(player);
             viewingForgeGui.remove(player);
         }
     }
@@ -147,5 +167,9 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
 
     public IForgeGui getPlayerViewing(Player player) {
         return viewingForgeGui.get(player);
+    }
+
+    public boolean isViewing(IForgeGui gui) {
+        return viewingForgeGui.containsValue(gui);
     }
 }
