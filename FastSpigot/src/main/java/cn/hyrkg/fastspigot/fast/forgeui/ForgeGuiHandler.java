@@ -103,7 +103,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     /**
      * 通知客户端关闭界面
      */
-    public void close(BaseForgeGui baseForgeGui) {
+    public void close(IForgeGui baseForgeGui) {
         JsonObject displayPacket = new JsonObject();
         displayPacket.addProperty("uuid", baseForgeGui.getUuid().toString());
         displayPacket.addProperty("close", 0);

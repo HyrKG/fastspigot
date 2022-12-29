@@ -10,18 +10,18 @@ import java.util.UUID;
 
 public abstract class BaseForgeShareGui implements IForgeGui {
     @Getter
-    private UUID uuid = UUID.randomUUID();
+    protected UUID uuid = UUID.randomUUID();
     @Getter
-    private final String guiShortName;
+    protected final String guiShortName;
     @Getter
-    private final ForgeGuiHandler guiHandler;
+    protected final ForgeGuiHandler guiHandler;
 
-    private HashSet<Player> viewerSets = new HashSet<>();
+    protected HashSet<Player> viewerSets = new HashSet<>();
 
     protected boolean isDisplayed = false;
 
     @Getter
-    private SharedProperty sharedProperty = new SharedProperty();
+    protected SharedProperty sharedProperty = new SharedProperty();
 
     public BaseForgeShareGui(String guiShortName, ForgeGuiHandler guiHandler) {
         this.guiShortName = guiShortName;
@@ -38,6 +38,14 @@ public abstract class BaseForgeShareGui implements IForgeGui {
 
     }
 
+    public final void display() {
+        guiHandler.display(this);
+    }
+
+
+    public final void close() {
+        guiHandler.close(this);
+    }
 
     @Override
     public void onClose(Player viewer) {
@@ -69,9 +77,9 @@ public abstract class BaseForgeShareGui implements IForgeGui {
     public Set<Player> getViewers() {
         return viewerSets;
     }
+
     public void forceSynProperty() {
-        if (!isDisplayed)
-            return;
+        if (!isDisplayed) return;
         if (this.getSharedProperty().detectChange()) {
             guiHandler.updateChanges(this);
         }
@@ -81,5 +89,6 @@ public abstract class BaseForgeShareGui implements IForgeGui {
     public SimpleMsg msg() {
         return SimpleMsg.create(this, guiHandler);
     }
+
 
 }

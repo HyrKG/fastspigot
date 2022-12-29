@@ -7,13 +7,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class BaseForgeEasyGui extends EasyGui implements IForgeGui {
-    protected List<Player> viewers = new ArrayList<>();
+    protected final HashSet<Player> viewers;
 
     protected final ForgeGuiHandler guiHandler;
     protected final String guiShortName;
@@ -26,7 +24,7 @@ public class BaseForgeEasyGui extends EasyGui implements IForgeGui {
         super(p);
         this.guiHandler = guiHandler;
         this.guiShortName = guiShortName;
-        viewers = Arrays.asList(p);
+        viewers = new HashSet<>();
     }
 
 
@@ -99,7 +97,7 @@ public class BaseForgeEasyGui extends EasyGui implements IForgeGui {
     }
 
     @Override
-    public List<Player> getViewers() {
+    public HashSet<Player> getViewers() {
         return viewers;
     }
 }
