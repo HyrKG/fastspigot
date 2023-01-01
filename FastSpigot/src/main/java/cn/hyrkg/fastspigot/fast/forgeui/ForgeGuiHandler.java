@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ForgeGuiHandler implements PluginMessageListener, Listener {
@@ -96,7 +97,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
      */
     public void display(IForgeGui baseForgeGui) {
         JsonObject packet = generateDisplayPacket(baseForgeGui);
-        for (Player viewer : baseForgeGui.getViewers()) {
+        for (Player viewer : new ArrayList<>(baseForgeGui.getViewers())) {
             display(viewer, baseForgeGui, packet);
         }
     }
@@ -107,13 +108,11 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     }
 
     public void display(Player player, IForgeGui baseForgeGui, JsonObject packet) {
-        for (Player viewer : baseForgeGui.getViewers()) {
-            if (isPlayerViewing(viewer)) {
-                removePlayer(viewer);
-            }
-            forgeGuiNetwork.sendPluginMessage(viewer, packet.toString());
-            viewingForgeGui.put(viewer, baseForgeGui);
+        if (isPlayerViewing(player)) {
+            removePlayer(player);
         }
+        forgeGuiNetwork.sendPluginMessage(player, packet.toString());
+        viewingForgeGui.put(player, baseForgeGui);
         guiSet.add(baseForgeGui);
         baseForgeGui.markDisplayed();
     }
@@ -130,7 +129,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
      */
     public void close(IForgeGui baseForgeGui) {
         JsonObject packet = generateClosePacket(baseForgeGui);
-        for (Player viewer : baseForgeGui.getViewers()) {
+        for (Player viewer : new ArrayList<>(baseForgeGui.getViewers())) {
             close(viewer, baseForgeGui, packet);
         }
     }
