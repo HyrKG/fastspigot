@@ -53,8 +53,14 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         jsonObject.addProperty("uuid", baseForgeGui.getUuid().toString());
         jsonObject.add("msg", msg.getJsonObj());
 
+
         for (Player viewer : baseForgeGui.getViewers()) {
-            forgeGuiNetwork.sendPluginMessage(viewer, jsonObject.toString());
+            String packetStr = jsonObject.toString();
+            if (baseForgeGui.getDistributor() != null) {
+                JsonObject packet = baseForgeGui.getDistributor().handle(PacketType.message, viewer, jsonObject);
+                packetStr = packet.toString();
+            }
+            forgeGuiNetwork.sendPluginMessage(viewer, packetStr);
 
         }
     }
@@ -79,7 +85,12 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         changes.add("update", baseForgeGui.getSharedProperty().generateAndClearUpdate());
         changes.addProperty("uuid", baseForgeGui.getUuid().toString());
         for (Player viewer : baseForgeGui.getViewers()) {
-            forgeGuiNetwork.sendPluginMessage(viewer, changes.toString());
+            String packetStr = changes.toString();
+            if (baseForgeGui.getDistributor() != null) {
+                JsonObject packet = baseForgeGui.getDistributor().handle(PacketType.update, viewer, changes);
+                packetStr = packet.toString();
+            }
+            forgeGuiNetwork.sendPluginMessage(viewer, packetStr);
         }
     }
 
@@ -111,7 +122,14 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         if (isPlayerViewing(player)) {
             removePlayer(player);
         }
-        forgeGuiNetwork.sendPluginMessage(player, packet.toString());
+
+        String packetStr = packet.toString();
+        if (baseForgeGui.getDistributor() != null) {
+            JsonObject newPacket = baseForgeGui.getDistributor().handle(PacketType.display, player, packet);
+            packetStr = newPacket.toString();
+        }
+
+        forgeGuiNetwork.sendPluginMessage(player, packetStr);
         viewingForgeGui.put(player, baseForgeGui);
         guiSet.add(baseForgeGui);
         baseForgeGui.markDisplayed();
@@ -140,7 +158,15 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     }
 
     public void close(Player player, IForgeGui baseForgeGui, JsonObject packet) {
-        forgeGuiNetwork.sendPluginMessage(player, packet.toString());
+
+        String packetStr = packet.toString();
+        if (baseForgeGui.getDistributor() != null) {
+            JsonObject newPacket = baseForgeGui.getDistributor().handle(PacketType.close, player, packet);
+            packetStr = newPacket.toString();
+        }
+
+
+        forgeGuiNetwork.sendPluginMessage(player, packetStr);
         if (!isPlayerViewing(player)) {
             return;
         }

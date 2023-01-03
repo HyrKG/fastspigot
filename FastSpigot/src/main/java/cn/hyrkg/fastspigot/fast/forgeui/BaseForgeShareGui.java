@@ -41,7 +41,10 @@ public abstract class BaseForgeShareGui implements IForgeGui {
 
     public void setViewers(HashSet<Player> newViewers, boolean displayToNew) {
 
-        for (Player oldViewer : new HashSet<>(newViewers)) {
+        HashSet<Player> closedViewer = new HashSet<>(viewerSets);
+        closedViewer.removeAll(newViewers);
+
+        for (Player oldViewer : closedViewer) {
             close(oldViewer);
         }
 

@@ -8,6 +8,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface IForgeGui {
+
+    String getGuiShortName();
+
+    UUID getUuid();
+
     void onUpdate();
 
     void onClose();
@@ -16,16 +21,12 @@ public interface IForgeGui {
         onClose();
     }
 
-
     void onMessage(JsonObject jsonObject);
 
     default void onMessage(Player viewer, JsonObject jsonObject) {
         onMessage(jsonObject);
     }
 
-    UUID getUuid();
-
-    String getGuiShortName();
 
     SharedProperty getSharedProperty();
 
@@ -39,5 +40,9 @@ public interface IForgeGui {
         HashSet set = new HashSet();
         set.add(getViewer());
         return set;
+    }
+
+    default IPacketDistributor getDistributor() {
+        return null;
     }
 }
