@@ -62,8 +62,8 @@ public class SharedProperty {
     }
 
     public JsonObject generateCompleteJsonAndClearUpdate() {
-        changedJson = new JsonObject();
-        removes.clear();
+        //我们不使用生成的结果，只需执行来清理更新
+        generateAndClearUpdate();
         return getCompleteJson();
     }
 
