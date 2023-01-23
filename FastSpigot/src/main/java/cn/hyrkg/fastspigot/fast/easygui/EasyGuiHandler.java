@@ -11,12 +11,13 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EasyGuiHandler implements Listener {
     private static EasyGuiHandler instance = null;
 
-    private static ArrayList<EasyGui> guis = new ArrayList<>();
-    private static ArrayList<TickGui> tickGuis = new ArrayList<>();
+    private static CopyOnWriteArrayList<EasyGui> guis = new CopyOnWriteArrayList<>();
+    private static CopyOnWriteArrayList<TickGui> tickGuis = new CopyOnWriteArrayList<>();
 
 
     private EasyGuiHandler() {
