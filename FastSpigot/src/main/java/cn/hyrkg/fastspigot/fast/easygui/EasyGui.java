@@ -3,10 +3,7 @@ package cn.hyrkg.fastspigot.fast.easygui;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 
 public abstract class EasyGui {
@@ -78,6 +75,10 @@ public abstract class EasyGui {
     }
 
     public abstract void onVerifiedEvent(InventoryClickEvent event);
+
+    public void onDragEvent(InventoryDragEvent event) {
+
+    }
 
     public abstract void onClose(InventoryCloseEvent event);
 
