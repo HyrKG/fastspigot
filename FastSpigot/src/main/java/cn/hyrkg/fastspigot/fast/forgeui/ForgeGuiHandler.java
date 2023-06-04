@@ -1,5 +1,6 @@
 package cn.hyrkg.fastspigot.fast.forgeui;
 
+import cn.hyrkg.fastspigot.fast.easygui.EasyGuiHandler;
 import cn.hyrkg.fastspigot.fast.forgenet.SimpleModNetwork;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -109,22 +110,29 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public void display(IForgeGui baseForgeGui) {
         JsonObject packet = generateDisplayPacket(baseForgeGui);
         for (Player viewer : new ArrayList<>(baseForgeGui.getViewers())) {
-            viewer.closeInventory();
-            display(viewer, baseForgeGui, packet);
+            display(viewer, baseForgeGui, packet,true);
+        }
+    }
+
+    public void display(IForgeGui baseForgeGui, boolean checkAndCloseOtherGui) {
+        JsonObject packet = generateDisplayPacket(baseForgeGui);
+        for (Player viewer : new ArrayList<>(baseForgeGui.getViewers())) {
+            display(viewer, baseForgeGui, packet,checkAndCloseOtherGui);
         }
     }
 
     public void display(Player player, IForgeGui baseForgeGui) {
-        player.closeInventory();
         JsonObject packet = generateDisplayPacket(baseForgeGui);
-        display(player, baseForgeGui, packet);
+        display(player, baseForgeGui, packet,true);
     }
 
-    public void display(Player player, IForgeGui baseForgeGui, JsonObject packet) {
+    public void display(Player player, IForgeGui baseForgeGui, JsonObject packet, boolean checkAndCloseOtherGui) {
         if (isPlayerViewing(player)) {
             removePlayer(player);
         }
-        player.closeInventory();
+        if (checkAndCloseOtherGui) {
+            EasyGuiHandler.checkAndCloseAll(player);
+        }
 
         String packetStr = packet.toString();
         if (baseForgeGui.getDistributor() != null) {
