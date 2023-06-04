@@ -1,5 +1,6 @@
 package cn.hyrkg.fastspigot.fast.easygui;
 
+import cn.hyrkg.fastspigot.spigot.utils.MsgHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -25,7 +26,6 @@ public abstract class EasyGui {
     }
 
     public EasyGui(Player p) {
-
         this.viewer = p;
         createInventory(9, "$default_inv");
     }
@@ -43,9 +43,16 @@ public abstract class EasyGui {
     }
 
     public void display() {
+        if (EasyGuiHandler.isViewing(getViewer())) {
+            EasyGuiHandler.checkAndCloseAll(getViewer());
+            viewer.closeInventory();
+            MsgHelper.to(viewer).warm("!! 发生了错误，请重新打开。");
+            return;
+        }
+
         if (inv != null) {
-            EasyGuiHandler.registerGui(this);
             viewer.openInventory(inv);
+            EasyGuiHandler.registerGui(this);
         } else
             viewer.closeInventory();
     }

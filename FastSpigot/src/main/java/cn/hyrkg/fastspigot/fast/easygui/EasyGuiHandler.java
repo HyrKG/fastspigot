@@ -2,8 +2,13 @@ package cn.hyrkg.fastspigot.fast.easygui;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -40,6 +45,7 @@ public class EasyGuiHandler implements Listener {
     }
 
     public static void registerGui(EasyGui gui) {
+        checkAndCloseAll(gui.getViewer());
         guis.add(gui);
         if (gui instanceof TickGui) {
             tickGuis.add((TickGui) gui);
@@ -50,6 +56,24 @@ public class EasyGuiHandler implements Listener {
         guis.remove(gui);
         if (gui instanceof TickGui)
             tickGuis.remove(gui);
+    }
+
+    public static void checkAndCloseAll(Player player) {
+        if (isViewing(player)) {
+            player.closeInventory();
+        }
+    }
+
+    public static boolean isViewing(Player player) {
+        for (EasyGui gui : guis) {
+            if (gui.isInv(player.getInventory())) {
+                return true;
+            }
+            if (gui.getViewer() != null && gui.getViewer().equals(player)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @EventHandler
@@ -66,8 +90,7 @@ public class EasyGuiHandler implements Listener {
     }
 
     @EventHandler
-    public void onDrag(InventoryDragEvent e)
-    {
+    public void onDrag(InventoryDragEvent e) {
         if (!(e.getWhoClicked() instanceof Player))
             return;
         for (EasyGui gui : guis) {
@@ -79,12 +102,11 @@ public class EasyGuiHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onClose(InventoryCloseEvent e) {
         if (!(e.getPlayer() instanceof Player))
             return;
-
-        for (EasyGui gui : guis)
+        for (EasyGui gui : guis) {
             if (gui.isInv(e.getInventory())) {
                 if (gui.getViewer() != null) {
                     gui.onClose(e);
@@ -94,10 +116,15 @@ public class EasyGuiHandler implements Listener {
                 }
                 break;
             }
-
+        }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onQuit(PlayerQuitEvent event) {
+        checkAndCloseAll(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onOpen(InventoryOpenEvent e) {
         if (!(e.getPlayer() instanceof Player))
             return;
@@ -116,6 +143,11 @@ public class EasyGuiHandler implements Listener {
 
         for (EasyGui gui : clones) {
             gui.onForceClose();
+            try {
+                gui.onClose(null);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
             guis.remove(gui);
             if (gui.getViewer() != null)
                 gui.getViewer().closeInventory();
