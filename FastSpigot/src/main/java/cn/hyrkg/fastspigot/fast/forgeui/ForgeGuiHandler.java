@@ -109,11 +109,13 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
     public void display(IForgeGui baseForgeGui) {
         JsonObject packet = generateDisplayPacket(baseForgeGui);
         for (Player viewer : new ArrayList<>(baseForgeGui.getViewers())) {
+            viewer.closeInventory();
             display(viewer, baseForgeGui, packet);
         }
     }
 
     public void display(Player player, IForgeGui baseForgeGui) {
+        player.closeInventory();
         JsonObject packet = generateDisplayPacket(baseForgeGui);
         display(player, baseForgeGui, packet);
     }
@@ -122,6 +124,7 @@ public class ForgeGuiHandler implements PluginMessageListener, Listener {
         if (isPlayerViewing(player)) {
             removePlayer(player);
         }
+        player.closeInventory();
 
         String packetStr = packet.toString();
         if (baseForgeGui.getDistributor() != null) {
