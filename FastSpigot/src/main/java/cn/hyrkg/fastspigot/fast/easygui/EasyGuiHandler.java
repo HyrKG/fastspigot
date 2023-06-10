@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EasyGuiHandler implements Listener {
+    private static Plugin plugin;
     private static EasyGuiHandler instance = null;
 
     private static CopyOnWriteArrayList<EasyGui> guis = new CopyOnWriteArrayList<>();
@@ -28,6 +29,7 @@ public class EasyGuiHandler implements Listener {
     }
 
     public static void init(Plugin plugin) {
+        EasyGuiHandler.plugin = plugin;
         if (instance == null) {
             plugin.getServer().getPluginManager().registerEvents(instance = new EasyGuiHandler(), plugin);
             plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -65,15 +67,19 @@ public class EasyGuiHandler implements Listener {
     }
 
     public static boolean isViewing(Player player) {
+        return getViewing(player) != null;
+    }
+
+    public static EasyGui getViewing(Player player) {
         for (EasyGui gui : guis) {
             if (gui.isInv(player.getInventory())) {
-                return true;
+                return gui;
             }
             if (gui.getViewer() != null && gui.getViewer().equals(player)) {
-                return true;
+                return gui;
             }
         }
-        return false;
+        return null;
     }
 
     @EventHandler
@@ -108,12 +114,10 @@ public class EasyGuiHandler implements Listener {
             return;
         for (EasyGui gui : guis) {
             if (gui.isInv(e.getInventory())) {
-                if (gui.getViewer() != null) {
-                    gui.onClose(e);
-                    if (gui instanceof TickGui)
-                        tickGuis.remove(gui);
-                    guis.remove(gui);
-                }
+                gui.onClose(e);
+                if (gui instanceof TickGui)
+                    tickGuis.remove(gui);
+                guis.remove(gui);
                 break;
             }
         }
@@ -154,4 +158,7 @@ public class EasyGuiHandler implements Listener {
         }
     }
 
+    public static Plugin getPlugin() {
+        return plugin;
+    }
 }
